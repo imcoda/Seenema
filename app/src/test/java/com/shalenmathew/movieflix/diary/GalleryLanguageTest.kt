@@ -67,7 +67,8 @@ class GalleryLanguageTest {
             for(attempt in 0 until 100){
                 Shadows.shadowOf(Looper.getMainLooper()).idle()
                 selected=runBlocking{DataStoreReference.getSelectedLanguage(activity).first()}
-                if(selected=="zh-CN")break
+                if(selected=="zh-CN" && activity.getSystemService(android.app.LocaleManager::class.java)
+                        .applicationLocales.toLanguageTags()=="zh-CN")break
                 Thread.sleep(20)
             }
             assertEquals("zh-CN",selected)
