@@ -93,4 +93,7 @@ class FavMovieViewModel @Inject constructor(private val favMovie: FavMovie, priv
 
     fun getAllGalleryImages() = dao.getAllGalleryImages()
 
+    suspend fun insertFirstGalleryImage(id: Int, imagePath: String) = dao.insertFirstGalleryImage(
+        com.shalenmathew.movieflix.data.local_storage.entity.PersonalGalleryEntity(mediaId = id, imagePath = imagePath))
+
 }
