@@ -271,4 +271,12 @@
     <string name="watched_month_value">Watched: %1$s</string>
     <string name="watched_year">Year</string>
     <string name="watched_month_label">Month</string>
+    <string name="add_still">Add still</string>
+    <string name="view_still">View still</string>
+    <string name="close_still">Close image</string>
+    <string name="gallery_poster_description">Movie information: %1$s</string>
+    <string name="gallery_still_description">View still: %1$s</string>
+    <string name="gallery_image_count">%1$d / %2$d</string>
+    <string name="previous_year">Previous year</string>
+    <string name="next_year">Next year</string>
 </resources>

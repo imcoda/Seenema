@@ -105,7 +105,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var recommendationAdapter: RecommendationAdapter
     private lateinit var castAdapter: CastAdapter
     private lateinit var episodeAdapter: EpisodeAdapter
-    private lateinit var galleryAdapter: com.shalenmathew.movieflix.core.adapters.PersonalGalleryAdapter
     private lateinit var watchProviderAdapter: com.shalenmathew.movieflix.core.adapters.WatchProviderAdapter
     private var whereToWatchLink: String? = null
     private val customTabsIntent by lazy {
@@ -169,12 +168,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
     private val pickBannerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             handleLocalBannerSelection(it)
-        }
-    }
-
-    private val pickGalleryImageLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-        uris.forEach { uri ->
-            handleGalleryImageSelection(uri)
         }
     }
 
@@ -300,26 +293,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             openEpisodeDetails(episode)
         }
         binding.episodesRecyclerView.adapter = episodeAdapter
-
-        galleryAdapter = com.shalenmathew.movieflix.core.adapters.PersonalGalleryAdapter(
-            onImageClick = { image ->
-                showImagePreview(image.imagePath)
-            },
-            onAddClick = { pickGalleryImageLauncher.launch("image/*") },
-            onLongClick = { image ->
-                context?.let { ctx ->
-                    com.google.android.material.dialog.MaterialAlertDialogBuilder(ctx, R.style.TrackingAlertDialog)
-                        .setTitle(R.string.delete_gallery_image)
-                        .setMessage(R.string.delete_gallery_image_message)
-                        .setPositiveButton(R.string.btn_delete) { _, _ ->
-                            favMovieViewModel.deleteGalleryImage(image)
-                        }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
-                }
-            }
-        )
-        binding.fragmentMovieDetailsGalleryRv.adapter = galleryAdapter
 
         watchProviderAdapter =
             com.shalenmathew.movieflix.core.adapters.WatchProviderAdapter { provider ->
@@ -539,20 +512,9 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
                 binding.fragmentMovieDetailsReleaseDate.isVisible = false
                 updateScheduleButtonVisibility()
                 
-                // Observe gallery images
-                mediaId?.let { id ->
-                    favMovieViewModel.getGalleryImages(id).observe(viewLifecycleOwner) { images ->
-                        binding.fragmentMovieDetailsGalleryLl.isVisible = true
-                        val galleryItems = mutableListOf<com.shalenmathew.movieflix.core.adapters.GalleryItem>()
-                        galleryItems.add(com.shalenmathew.movieflix.core.adapters.GalleryItem.AddButton)
-                        galleryItems.addAll(images.map { com.shalenmathew.movieflix.core.adapters.GalleryItem.Image(it) })
-                        galleryAdapter.submitList(galleryItems)
-                    }
-                }
             } else {
                 binding.favIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.fav_outline))
                 binding.fragmentMovieDetailsPersonalNoteLl.isVisible = false
-                binding.fragmentMovieDetailsGalleryLl.isVisible = false
                 binding.fragmentMovieDetailsOverview.isVisible = true
                 binding.fragmentMovieDetailsGenre.isVisible = true
                 
@@ -1914,33 +1876,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             e.printStackTrace()
             showToast(ctx, getString(R.string.image_copy_failed))
         }
-    }
-
-    private fun handleGalleryImageSelection(uri: android.net.Uri) {
-        val ctx=context?:return;val id=mediaId?:return
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val file=withContext(Dispatchers.IO){com.shalenmathew.movieflix.core.utils.DiaryImages.copy(ctx,uri,"gallery_")}
-                favMovieViewModel.insertGalleryImage(id,file.absolutePath)
-            }catch(e:Exception){showToast(ctx,e.message?:getString(R.string.image_copy_failed))}
-        }
-    }
-
-    private fun showImagePreview(imagePath: String) {
-        val context = context ?: return
-        val dialog = Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
-        dialog.setContentView(R.layout.dialog_image_preview)
-        
-        val imageView = dialog.findViewById<ImageView>(R.id.preview_image_view)
-        val closeBtn = dialog.findViewById<View>(R.id.preview_close_btn)
-        
-        imageView.loadImage(imagePath)
-        
-        closeBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-        
-        dialog.show()
     }
 
 }
