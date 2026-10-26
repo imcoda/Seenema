@@ -55,15 +55,11 @@ class LibraryFragment : Fragment() {
         lifecycleScope.launch {
             val lastTab = DataStoreReference.getLastSelectedLibraryTab(requireContext()).first()
             binding.viewPager.setCurrentItem(0, false)
-            binding.tabLayout.visibility = View.GONE
-            binding.viewPager.isUserInputEnabled = false
 
             TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                 tab.text = when (position) {
-                    0 -> getString(R.string.watch_list)
-                    1 -> getString(R.string.favourites)
-                    2 -> getString(R.string.lists)
-                    3 -> getString(R.string.tracking)
+                    0 -> getString(R.string.favourites)
+
                     else -> ""
                 }
             }.attach()
@@ -122,13 +118,7 @@ class LibraryFragment : Fragment() {
         override fun getItemCount(): Int = 1
 
         override fun createFragment(position: Int): Fragment {
-            return when (position) {
-                0 -> FavFragment()
-                1 -> FavFragment()
-                2 -> CustomListsFragment()
-                3 -> TrackingFragment()
-                else -> WatchListFragment()
-            }
+            return FavFragment()
         }
     }
 }
