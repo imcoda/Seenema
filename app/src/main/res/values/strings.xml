@@ -1,0 +1,261 @@
+<resources>
+    <string name="app_name">MovieFlix</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_terms">By proceeding you confirm that you are above 18 years of age and agree to the Privacy Policy and Terms of Use</string>
+    <string name="personal_note">个人笔记</string>
+    <string name="click_to_add_your_personal_note">添加笔记</string>
+    <string name="enter_your_note">Enter your note…</string>
+    <string name="delete_personal_note">删除笔记</string>
+    <string name="watch_provider_logo">Watch provider logo</string>
+    <string name="where_to_watch">Available On</string>
+    <string name="no_streaming_info">No streaming information available</string>
+    <string name="release_date">Release Date: %1$s</string>
+
+    <!-- Settings -->
+    <string name="settings">设置</string>
+    <string name="home">Home</string>
+    <string name="search">搜索</string>
+    <string name="library">观影</string>
+    <string name="lists">Lists</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="popular_tv_shows">Popular TV Shows</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="anime_series">Anime Series</string>
+    <string name="netflix_shows">Netflix Shows</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="whats_trending">What\'s Trending ?</string>
+    <string name="amazon_prime_shows">Amazon Prime Shows</string>
+    <string name="now_playing_movies">Now Playing Movies</string>
+    <string name="continue_watching">Continue Watching</string>
+    <string name="genre_action">Action</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_animation">Animation</string>
+    <string name="genre_comedy">Comedy</string>
+    <string name="genre_crime">Crime</string>
+    <string name="genre_documentary">Documentary</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_family">Family</string>
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_history">History</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_music">Music</string>
+    <string name="genre_mystery">Mystery</string>
+    <string name="genre_romance">Romance</string>
+    <string name="genre_scifi">Science Fiction</string>
+    <string name="genre_tv_movie">TV Movie</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_war">War</string>
+    <string name="genre_western">Western</string>
+    <string name="change_language">语言</string>
+    <string name="select_language">Select Language</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="hindi">Hindi</string>
+    <string name="french">French</string>
+    <string name="german">German</string>
+    <string name="learn_how_to_use">Learn how to use the app</string>
+    <string name="app_suggestion">More Apps u might like</string>
+    <string name="about_me">About me</string>
+    <string name="donation">Your donations helps to keep the app free for other users</string>
+    <string name="source_code">源码</string>
+
+    <!-- More Apps -->
+    <string name="quotes_app_title">Quotes.app</string>
+    <string name="quotes_app_description">A minimalistic open-source add-free quotes app with Tinder-like swipeable cards, delivering positivity and gratitude in your life.</string>
+
+    <!-- About Me -->
+    <string name="portfolio">Portfolio</string>
+    <string name="github">Github</string>
+    <string name="twitter">Twitter</string>
+    <string name="discord">Discord</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="youtube">Youtube</string>
+    <string name="linktree">LinkTree</string>
+
+    <!-- Donation -->
+    <string name="buy_me_a_coffee">Buy me a coffee</string>
+    <string name="ko_fi">Ko-fi</string>
+
+    <!-- Backup -->
+    <string name="backup_restore">备份与恢复</string>
+    <string name="export_library">导出备份</string>
+    <string name="import_library">恢复备份</string>
+    <string name="export_desc">保存观影记录、笔记、海报和剧照。</string>
+    <string name="import_desc">从 ZIP 备份恢复数据，替换当前记录。</string>
+
+    <!-- UI Components -->
+    <string name="watch_now">Watch Now</string>
+    <string name="play_the_trailer">Play The Trailer</string>
+    <string name="about">About</string>
+    <string name="episodes">Episodes</string>
+    <string name="select_season">Select Season</string>
+    <string name="season_1">Season 1</string>
+    <string name="cast">Cast</string>
+    <string name="more_like_this">More Like This</string>
+    <string name="overview">Overview</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="known_for_acting">known for acting</string>
+    <string name="biography">Biography</string>
+    <string name="birthday">Birthday:</string>
+    <string name="birthplace">Birthplace:</string>
+    <string name="movies_and_shows">Movies &amp; Shows</string>
+    <string name="fav_placeholder">暂无观影记录</string>
+    <string name="favourites">已看</string>
+    <string name="no_result_found">无结果</string>
+    <string name="trending_searches">Trending Searches</string>
+    <string name="intro_subtitle">endless entertainment for everyone</string>
+    <string name="continue_btn">Countinue  ></string>
+    <string name="donation_title">Donation</string>
+    <string name="tracking_placeholder">No series tracked yet. Start tracking your favorite shows!</string>
+    <string name="tracking">Tracking</string>
+    <string name="no_series_found">No series found</string>
+    <string name="watchlist_placeholder">All your watch-later movies show up here — try adding some!</string>
+    <string name="watch_list">Watchlist</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="no_custom_lists_yet">No custom lists yet.</string>
+    <string name="made_by_shalen_mathew">Made by ❤️ by Shalen Mathew</string>
+    <string name="create_new_list">Create New List</string>
+    <string name="list_name">List Name</string>
+    <string name="description_optional">Description (Optional)</string>
+    <string name="create_list">Create List</string>
+    <string name="preview_collage">Preview Collage</string>
+    <string name="select_custom_poster">Select your custom poster</string>
+    <string name="download">Download</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
+    <string name="edit_list">Edit List</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="msg_delete_list_title">Delete List?</string>
+    <string name="msg_delete_list_message">Are you sure you want to delete \"%1$s\"? This action cannot be undone.</string>
+    <string name="btn_delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="finally_over">Damn, finally over!</string>
+    <string name="add_to_watchlist">Add to Watchlist</string>
+    <string name="add_to_favorites">标记已看</string>
+    <string name="stop_tracking_clear_space">Stop Tracking &amp; Clear Space</string>
+    <string name="done">Done</string>
+    <string name="more_options">More Options</string>
+    <string name="schedule_reminder">Schedule Reminder</string>
+    <string name="notify_me_to_watch_this_movie_later">Notify me to watch this movie later</string>
+    <string name="track_series">Track Series</string>
+    <string name="track_series_subtitle">Cache all episodes to track your currently watching episodes</string>
+    <string name="add_to_list">Add to List</string>
+    <string name="new_collection">New Collection</string>
+    <string name="items_count">%1$d Items</string>
+    <string name="save_to_custom_list">Save to one of your custom lists</string>
+    <string name="created_on_movieflix">MovieFlix</string>
+    <string name="template_classic_dark" translatable="false">Classic Dark</string>
+    <string name="template_minimal_poster" translatable="false">Minimal Poster</string>
+    <string name="label_client" translatable="false">CLIENT</string>
+    <string name="label_category" translatable="false">CATEGORY</string>
+    <string name="label_release_date" translatable="false">RELEASE DATE</string>
+    <string name="label_app" translatable="false">APP</string>
+    <string name="label_main_character" translatable="false">MAIN CHARACTER</string>
+    <string name="label_popular_artist" translatable="false">POPULAR ARTIST</string>
+    <string name="template_editorial_poster" translatable="false">Editorial Poster</string>
+    <string name="template_character_poster" translatable="false">Editorial Poster 2</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="setting_item">Setting Item</string>
+    <string name="failed_to_load_actor_details">Failed to load actor details</string>
+    <string name="search_hint">搜索电影</string>
+    <string name="movie_name_placeholder">Movie Name</string>
+    <string name="genres_placeholder">Action • Explosive • Suspenseful • Exciting • Adventure</string>
+    <string name="choose_a_new_banner">Choose a New Banner</string>
+    <string name="add_banner_from_gallery">Add banner from gallery</string>
+    <string name="plus_create_new_list">+ Create New List</string>
+
+    <!-- Messages and Labels -->
+    <string name="msg_internet_required">Internet required</string>
+    <string name="msg_check_internet">Check your internet connection</string>
+    <string name="msg_no_movie_found">No movie found</string>
+    <string name="msg_export_success">Export successful!</string>
+    <string name="msg_export_failed">Export failed!</string>
+    <string name="msg_exporting_background">Exporting library in background...</string>
+    <string name="msg_restore_success">Restore successful!</string>
+    <string name="msg_restore_failed">Restore failed!</string>
+    <string name="msg_restoring_background">Restoring library in background...</string>
+    <string name="msg_unknown_category">Unknown category</string>
+    <string name="msg_no_cast_available">No cast data available</string>
+    <string name="msg_no_crew_available">No crew data available</string>
+    <string name="msg_season_not_found_locally">Season not found locally</string>
+    <string name="msg_failed_fetch_series">Failed to fetch series info</string>
+    <string name="msg_failed_fetch_images">Failed to fetch images</string>
+    <string name="lbl_episode_number">Episode %1$d</string>
+    <string name="lbl_last_watched">Last watched : Season %1$d ep %2$d</string>
+    <string name="lbl_percent">%1$d%%</string>
+    <string name="msg_finished_episodes">You just finished all %1$d episodes of %2$s.</string>
+    <string name="btn_remove_watchlist">Remove from Watchlist</string>
+    <string name="btn_remove_favorites">移除记录</string>
+    <string name="msg_no_recommendation">No recommendation</string>
+    <string name="lbl_season_number">Season %1$d</string>
+    <string name="btn_remove_schedule">Remove Schedule</string>
+    <string name="msg_notified_on">You\'ll be notified on %1$s</string>
+    <string name="btn_schedule_reminder">Schedule a Reminder</string>
+    <string name="msg_schedule_reminder_desc">Get a notification to watch this movie later</string>
+    <string name="btn_untrack_series">Untrack Series</string>
+    <string name="msg_untrack_series_desc">Stop tracking and remove cached episodes</string>
+
+    <!-- Toast and Dialog Messages -->
+    <string name="msg_series_removed_tracking">Series removed from tracking</string>
+    <string name="msg_swap_seasons_tracking">Swap seasons in the Tracking list</string>
+    <string name="msg_removed_watchlist">Removed from watchlist</string>
+    <string name="msg_added_watchlist">Added to watchlist</string>
+    <string name="msg_removed_favorites">Removed from Favorites</string>
+    <string name="msg_added_favorites">Added to Favorites</string>
+    <string name="msg_tracking_stopped">Tracking stopped</string>
+    <string name="msg_banner_updated">Banner updated!</string>
+    <string name="msg_added_to_watchlist">Movie added to Watchlist</string>
+    <string name="msg_removed_from_watchlist">Movie removed from Watchlist</string>
+    <string name="msg_added_to_favorites">已标记为看过</string>
+    <string name="msg_removed_from_favorites">已移除记录</string>
+    <string name="msg_no_info_available">No information available</string>
+    <string name="msg_schedule_removed">Schedule removed</string>
+    <string name="msg_tracking_started">Starting to track series. Caching episodes…</string>
+    <string name="msg_series_untracked">Series untracked</string>
+    <string name="msg_notification_permission_required">Notification permission is required for scheduled reminders</string>
+    <string name="msg_allow_notifications_rationale">Allow notifications to get reminders for scheduled movies</string>
+    <string name="msg_movie_data_not_loaded">Movie data not loaded yet. Please try again.</string>
+    <string name="msg_scheduled_for">Scheduled for %1$s. You\'ll get a notification!</string>
+    <string name="error_name_empty">Name cannot be empty</string>
+    <string name="msg_syncing_episodes">Syncing episodes… please wait.</string>
+    <string name="msg_no_seasons_available">No seasons available</string>
+    <string name="msg_media_id_null">Media ID is null</string>
+    <string name="msg_something_went_wrong">Something went wrong</string>
+    <string name="msg_unknown_error">Unknown error</string>
+    <string name="msg_episodes_count">Episodes %1$d</string>
+    <string name="msg_no_biography">No biography available for this person.</string>
+    <string name="msg_no_overview_episode">No overview available for this episode.</string>
+    <string name="msg_no_description">No description available</string>
+    <string name="msg_no_episodes">No episodes</string>
+    <string name="lbl_known_for">Known for %1$s</string>
+    <string name="lbl_actor">Actor</string>
+    <string name="lbl_cast_member">CAST MEMBER</string>
+    <string name="btn_previous_season">Previous Season</string>
+    <string name="btn_next_season">Next Season</string>
+    <string name="msg_stop_tracking_title">Stop Tracking Series?</string>
+    <string name="msg_stop_tracking_message">This will remove \"%1$s\" from your library and delete all cached episodes for offline viewing.</string>
+    <string name="btn_stop_tracking">Stop Tracking</string>
+    <string name="btn_keep_tracking">Keep Tracking</string>
+    <string name="btn_pause_trailer">Pause Trailer</string>
+    <string name="btn_play_trailer">Play Trailer</string>
+    <string name="lbl_scheduled_on">Scheduled on: %1$s %2$s</string>
+
+    <!-- Poster Customization -->
+    <string name="btn_change_movie_poster">更换海报</string>
+    <string name="btn_change_show_poster">Change Show Poster</string>
+    <string name="lbl_choose_a_new_poster">Choose a New Poster</string>
+    <string name="btn_add_poster_from_gallery">从相册选择</string>
+    <string name="msg_poster_updated">Poster updated!</string>
+    <string name="btn_change_movie_banner">Change Movie Banner</string>
+    <string name="btn_change_show_banner">Change Show Banner</string>
+
+    <!-- My Collection -->
+    <string name="lbl_my_gallery">个人剧照</string>
+    <string name="lbl_add_to_gallery">添加剧照</string>
+    <string name="lbl_collection_desc"></string>
+    <string name="btn_remove_from_watchlist">Remove from Watchlist</string>
+    <string name="btn_remove_from_favorites">移除记录</string>
+</resources>

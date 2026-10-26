@@ -1,0 +1,92 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MovieFlix" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.MovieFlix" parent="Base.Theme.MovieFlix" >
+        <item name="colorPrimary">@color/black</item>
+
+    </style>
+
+    <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.8</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_peekHeight">550dp</item>
+    </style>
+
+    <style name="RoundedCornerImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6dp</item>
+    </style>
+
+    <style name="DatePickerThemeLight" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/app_color</item>
+        <item name="colorAccent">@color/app_color</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">#757575</item>
+        <item name="android:datePickerStyle">@style/DatePickerStyleLight</item>
+        <item name="android:timePickerStyle">@style/TimePickerStyleLight</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonLight</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonLight</item>
+    </style>
+
+    <style name="DatePickerStyleLight" parent="android:Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/app_color</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="TimePickerStyleLight" parent="android:Widget.Material.Light.TimePicker">
+        <item name="android:headerBackground">@color/app_color</item>
+        <item name="android:numbersTextColor">@color/black</item>
+        <item name="android:numbersSelectorColor">@color/app_color</item>
+        <item name="android:headerTimeTextAppearance">@style/TimeTextAppearanceLight</item>
+        <item name="android:headerAmPmTextAppearance">@style/AmPmTextAppearanceLight</item>
+    </style>
+
+    <style name="TimeTextAppearanceLight" parent="android:TextAppearance.Material.Display1">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AmPmTextAppearanceLight" parent="android:TextAppearance.Material.Body1">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="DatePickerButtonLight" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/app_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TrackingAlertDialog" parent="Theme.Material3.DayNight.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/tracking_dialog_bg</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="buttonBarPositiveButtonStyle">@style/TrackingDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/TrackingDialogButton</item>
+    </style>
+
+    <style name="TrackingDialogButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="QuickActionFabShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">25%</item>
+    </style>
+
+</resources>
