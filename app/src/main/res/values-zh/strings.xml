@@ -237,4 +237,8 @@
     <string name="image_copy_failed">图片保存失败</string>
     <string name="overview_more">\u0020（展开）</string>
     <string name="overview_less">\n\n（收起）</string>
+    <string name="watched_month">观看年月</string>
+    <string name="watched_month_value">观看于：%1$s</string>
+    <string name="watched_year">年</string>
+    <string name="watched_month_label">月</string>
 </resources>
