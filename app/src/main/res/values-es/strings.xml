@@ -11,7 +11,7 @@
     <string name="settings">Ajustes</string>
     <string name="home">Inicio</string>
     <string name="search">Buscar</string>
-    <string name="library">Biblioteca</string>
+    <string name="library">Galería</string>
     <string name="lists">Listas</string>
     <string name="popular_movies">Películas populares</string>
     <string name="popular_tv_shows">Programas de TV populares</string>
@@ -75,8 +75,8 @@
     <string name="birthday">Fecha de nacimiento:</string>
     <string name="birthplace">Lugar de nacimiento:</string>
     <string name="movies_and_shows">Películas y series</string>
-    <string name="fav_placeholder">Todas tus películas favoritas aparecerán aquí. ¡Intenta añadir algunas!</string>
-    <string name="favourites">Favoritos</string>
+    <string name="fav_placeholder">Galería</string>
+    <string name="favourites">Galería</string>
     <string name="no_result_found">No se han encontrado resultados</string>
     <string name="trending_searches">Búsquedas de tendencia</string>
     <string name="intro_subtitle">entretenimiento sin fin para todos</string>
@@ -106,7 +106,7 @@
     <string name="cancel">Cancelar</string>
     <string name="finally_over">¡Vaya, por fin ha terminado!</string>
     <string name="add_to_watchlist">Añadir a la lista de seguimiento</string>
-    <string name="add_to_favorites">Añadir a favoritos</string>
+    <string name="add_to_favorites">Añadir a la galería</string>
     <string name="new_collection">Nueva Colección</string>
     <string name="items_count">%1$d Elementos</string>
     <string name="stop_tracking_clear_space">Detener seguimiento y liberar espacio</string>
@@ -148,4 +148,5 @@
     <string name="add_banner_from_gallery">Añadir banner de la galería</string>
     <string name="lbl_my_gallery">Galería de medios</string>
     <string name="lbl_add_to_gallery">Añadir a la galería</string>
+    <string name="gallery">Galería</string>
 </resources>
