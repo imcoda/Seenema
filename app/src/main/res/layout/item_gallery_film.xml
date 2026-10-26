@@ -76,18 +76,6 @@
                 android:textSize="11sp"
                 android:visibility="gone" />
 
-            <ImageButton
-                android:id="@+id/gallery_film_add"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="bottom|end"
-                android:src="@drawable/ic_add"
-                android:padding="13dp"
-                android:background="@drawable/gallery_badge_background"
-                android:backgroundTint="#9A000000"
-                android:contentDescription="@string/add_still"
-                android:visibility="gone"
-                app:tint="@color/white" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
