@@ -16,7 +16,7 @@ import com.shalenmathew.movieflix.R
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ConcatAdapter
-import com.shalenmathew.movieflix.core.adapters.FavAdapters
+import com.shalenmathew.movieflix.core.adapters.GalleryTimelineAdapter as FavAdapters
 import com.shalenmathew.movieflix.core.adapters.FavCollectionsAdapter
 import com.shalenmathew.movieflix.core.adapters.FavCreateCollectionAdapter
 import com.shalenmathew.movieflix.core.utils.ClickHandler
@@ -136,7 +136,11 @@ class FavFragment : Fragment() {
             }
         )
         val spanCount = resources.getInteger(R.integer.grid_span_count)
-        binding.fragmentFavRv.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        binding.fragmentFavRv.layoutManager = GridLayoutManager(requireContext(), spanCount).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int) = if (adapter.isHeading(position)) spanCount else 1
+            }
+        }
         binding.fragmentFavRv.adapter = adapter
     }
 
@@ -149,7 +153,7 @@ class FavFragment : Fragment() {
         
         actions.add(QuickActionOverlay.ActionItem(
             icon = R.drawable.baseline_share_24,
-            label = getString(R.string.share).plus(" Movie"),
+            label = getString(R.string.share_movie),
             action = { shareMediaCard(this, movie, mediaSharePosterPicker) }
         ))
 
@@ -279,7 +283,7 @@ class FavFragment : Fragment() {
             updateMediaPoster(id, file.absolutePath)
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast(ctx, "Failed to copy image")
+            showToast(ctx, getString(R.string.image_copy_failed))
         }
     }
 
