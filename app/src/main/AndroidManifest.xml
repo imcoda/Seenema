@@ -42,6 +42,11 @@
             android:name=".presentation.actor_detail.ActorDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.MovieFlix" />
+
+        <activity
+            android:name=".presentation.gallery.GalleryViewerActivity"
+            android:exported="false"
+            android:theme="@style/GalleryViewerTheme" />
         
         <activity
             android:name=".presentation.episode_details.EpisodeDetailsActivity"
