@@ -14,7 +14,7 @@ android {
 
 
 
-    val movieApiKey = "" // Configure the TMDB key in the app, never in a public APK.
+    val movieApiKey = System.getenv("MOVIE_API_KEY") ?: providers.gradleProperty("movieApiKey").getOrElse("")
     val signingProps = Properties().apply {
         val local = rootProject.file("signing.properties")
         if (local.exists()) local.inputStream().use { load(it) }
@@ -37,8 +37,8 @@ android {
         applicationId = "ink.c0d4.movieflix"
         minSdk = 24
         targetSdk = 36
-        versionCode = 100
-        versionName = "2.2-personal.1"
+        versionCode = 101
+        versionName = "2.2-personal.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 
