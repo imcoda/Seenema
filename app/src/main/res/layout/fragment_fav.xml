@@ -96,9 +96,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="6dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                android:paddingBottom="16dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:spanCount="@integer/grid_span_count" />
+                />
 
             <TextView
                 android:id="@+id/tvNoResult"

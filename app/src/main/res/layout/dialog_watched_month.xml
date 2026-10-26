@@ -1,49 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:paddingHorizontal="24dp"
-    android:paddingVertical="12dp">
+    android:orientation="vertical"
+    android:background="@drawable/watched_month_sheet_background"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="24dp">
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/gallery_badge_background"
+        android:backgroundTint="#655A73" />
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/watched_year_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="@string/watched_year"
-            android:textColor="@color/white"
-            android:labelFor="@id/watched_year_picker" />
-        <NumberPicker
-            android:id="@+id/watched_year_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/watched_month"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+    <TextView
+        android:id="@+id/watched_month_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/watched_previous_year"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_keyboard_arrow_left_24"
+            android:padding="12dp"
+            android:contentDescription="@string/previous_year"
+            app:tint="@color/white" />
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/watched_year_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:contentDescription="@string/watched_year"
+                android:clickable="true"
+                android:focusable="true" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/watched_year_picker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:maxLength="4"
+                android:selectAllOnFocus="true"
+                android:contentDescription="@string/watched_year"
+                android:textColor="@color/white"
+                android:textCursorDrawable="@drawable/search_cursor"
+                android:textSize="20sp"
+                android:visibility="gone" />
+        </FrameLayout>
+        <ImageButton
+            android:id="@+id/watched_next_year"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_keyboard_arrow_right_24"
+            android:padding="12dp"
+            android:contentDescription="@string/next_year"
+            app:tint="@color/white" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
+    <GridLayout
+        android:id="@+id/watched_month_grid"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/watched_month_label"
+        android:columnCount="3"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end|center_vertical">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/watched_month_cancel"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@string/watched_month_label"
-            android:textColor="@color/white"
-            android:labelFor="@id/watched_month_picker" />
-        <NumberPicker
-            android:id="@+id/watched_month_picker"
+            android:textColor="@color/text_secondary" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/watched_month_save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:paddingHorizontal="24dp"
+            android:backgroundTint="@color/app_color"
+            android:text="@string/save_changes"
+            android:textAllCaps="false"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/white"
+            app:cornerRadius="14dp" />
     </LinearLayout>
 </LinearLayout>
