@@ -2,7 +2,7 @@ package com.shalenmathew.movieflix.core.utils
 
 import com.shalenmathew.movieflix.data.local_storage.entity.FavouritesEntity
 
-/** Dates are the existing local gallery insertion dates; no database migration. */
+/** The existing timestamp stores the watched date, editable to month precision. */
 object GalleryTimeline {
     data class Section(val month: String?, val movies: List<FavouritesEntity>)
 
