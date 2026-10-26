@@ -44,12 +44,13 @@ object DataStoreReference{
     }
 
     suspend fun setSelectedLanguage(context: Context, value: String) {
+        require(value in AppLanguage.supported)
         context.userDatastore.edit {
             it[SELECTED_LANGUAGE] = value
         }
     }
 
     fun getSelectedLanguage(context: Context) = context.userDatastore.data.map {
-        it[SELECTED_LANGUAGE] ?: context.resources.configuration.locales[0]?.toLanguageTag() ?: "en-US"
+        AppLanguage.current(context)
     }
 }
