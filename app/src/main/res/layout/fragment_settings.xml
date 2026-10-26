@@ -79,16 +79,7 @@
                     android:id="@+id/item_backup"
                     layout="@layout/item_setting" />
 
-                <TextView
-                    android:id="@+id/tv_footer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:gravity="center"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/_10ssp"
-                    android:text="@string/made_by_shalen_mathew" />
+
 
             </LinearLayout>
 

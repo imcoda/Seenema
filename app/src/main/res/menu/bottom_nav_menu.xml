@@ -8,7 +8,7 @@
     <item
         android:id="@+id/libraryFragment"
         android:icon="@drawable/icon_library"
-        android:title="@string/library" />
+        android:title="@string/gallery" />
 
     <item
         android:id="@+id/settingsFragment"

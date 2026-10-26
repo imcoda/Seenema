@@ -32,19 +32,10 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupSettingsItems()
-        setupFooter()
         binding.itemTroubleshoot.root.visibility = View.GONE
         binding.itemAppSuggestion.root.visibility = View.GONE
         binding.itemDonation.root.visibility = View.GONE
         binding.itemAboutMe.root.visibility = View.GONE
-    }
-
-    private fun setupFooter() {
-        var footerText = getString(R.string.made_by_shalen_mathew)
-        if (BuildConfig.DEBUG) {
-            footerText += " {debug.mod}"
-        }
-        binding.tvFooter.text = footerText
     }
 
     private fun setupSettingsItems() {

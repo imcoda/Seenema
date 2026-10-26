@@ -16,7 +16,7 @@
     <string name="settings">Settings</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
-    <string name="library">Library</string>
+    <string name="library">Gallery</string>
     <string name="lists">Lists</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="popular_tv_shows">Popular TV Shows</string>
@@ -81,7 +81,7 @@
     <string name="backup_restore">Backup &amp; Restore</string>
     <string name="export_library">Export Library</string>
     <string name="import_library">Import Library</string>
-    <string name="export_desc">Save your watchlist, favorites, tracking data &amp; collection to a ZIP file.</string>
+    <string name="export_desc">Save your gallery, notes and images to a ZIP file.</string>
     <string name="import_desc">Restore your data and personalized media from a previously saved ZIP backup file.</string>
 
     <!-- UI Components -->
@@ -101,8 +101,8 @@
     <string name="birthday">Birthday:</string>
     <string name="birthplace">Birthplace:</string>
     <string name="movies_and_shows">Movies &amp; Shows</string>
-    <string name="fav_placeholder">All your Fav movies show up here — try adding some!</string>
-    <string name="favourites">Favourites</string>
+    <string name="fav_placeholder">Your gallery is empty</string>
+    <string name="favourites">Gallery</string>
     <string name="no_result_found">No Result found</string>
     <string name="trending_searches">Trending Searches</string>
     <string name="intro_subtitle">endless entertainment for everyone</string>
@@ -133,7 +133,7 @@
     <string name="cancel">Cancel</string>
     <string name="finally_over">Damn, finally over!</string>
     <string name="add_to_watchlist">Add to Watchlist</string>
-    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="add_to_favorites">Add to gallery</string>
     <string name="stop_tracking_clear_space">Stop Tracking &amp; Clear Space</string>
     <string name="done">Done</string>
     <string name="more_options">More Options</string>
@@ -188,7 +188,7 @@
     <string name="lbl_percent">%1$d%%</string>
     <string name="msg_finished_episodes">You just finished all %1$d episodes of %2$s.</string>
     <string name="btn_remove_watchlist">Remove from Watchlist</string>
-    <string name="btn_remove_favorites">Remove from Favorites</string>
+    <string name="btn_remove_favorites">Remove from gallery</string>
     <string name="msg_no_recommendation">No recommendation</string>
     <string name="lbl_season_number">Season %1$d</string>
     <string name="btn_remove_schedule">Remove Schedule</string>
@@ -203,14 +203,14 @@
     <string name="msg_swap_seasons_tracking">Swap seasons in the Tracking list</string>
     <string name="msg_removed_watchlist">Removed from watchlist</string>
     <string name="msg_added_watchlist">Added to watchlist</string>
-    <string name="msg_removed_favorites">Removed from Favorites</string>
-    <string name="msg_added_favorites">Added to Favorites</string>
+    <string name="msg_removed_favorites">Removed from gallery</string>
+    <string name="msg_added_favorites">Added to gallery</string>
     <string name="msg_tracking_stopped">Tracking stopped</string>
     <string name="msg_banner_updated">Banner updated!</string>
     <string name="msg_added_to_watchlist">Movie added to Watchlist</string>
     <string name="msg_removed_from_watchlist">Movie removed from Watchlist</string>
-    <string name="msg_added_to_favorites">Movie added to Favorites</string>
-    <string name="msg_removed_from_favorites">Movie removed from Favorites</string>
+    <string name="msg_added_to_favorites">Movie added to gallery</string>
+    <string name="msg_removed_from_favorites">Movie removed from gallery</string>
     <string name="msg_no_info_available">No information available</string>
     <string name="msg_schedule_removed">Schedule removed</string>
     <string name="msg_tracking_started">Starting to track series. Caching episodes…</string>
@@ -257,5 +257,14 @@
     <string name="lbl_add_to_gallery">Add to Gallery</string>
     <string name="lbl_collection_desc">Save your favorite scenes or fan art from gallery</string>
     <string name="btn_remove_from_watchlist">Remove from Watchlist</string>
-    <string name="btn_remove_from_favorites">Remove from Favorites</string>
+    <string name="btn_remove_from_favorites">Remove from gallery</string>
+    <string name="gallery">Gallery</string>
+    <string name="gallery_undated">Undated</string>
+    <string name="chinese">中文（简体）</string>
+    <string name="share_movie">Share Movie</string>
+    <string name="delete_gallery_image">Delete Image?</string>
+    <string name="delete_gallery_image_message">Do you want to remove this image from your collection?</string>
+    <string name="image_copy_failed">Failed to copy image</string>
+    <string name="overview_more">\u0020(More)</string>
+    <string name="overview_less">\n\n(Less)</string>
 </resources>

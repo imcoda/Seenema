@@ -64,7 +64,7 @@
                                 android:paddingStart="@dimen/_15sdp"
                                 android:paddingTop="@dimen/_12sdp"
                                 android:paddingBottom="@dimen/_18sdp"
-                                android:text="@string/favourites"
+                                android:text="@string/gallery"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_20ssp" />
                         </RelativeLayout>

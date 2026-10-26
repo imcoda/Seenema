@@ -48,11 +48,16 @@ class LanguageFragment : Fragment() {
             LanguageItem(getString(R.string.spanish), "es-ES"),
             LanguageItem(getString(R.string.hindi), "hi-IN"),
             LanguageItem(getString(R.string.french), "fr-FR"),
-            LanguageItem(getString(R.string.german), "de-DE")
+            LanguageItem(getString(R.string.german), "de-DE"),
+            LanguageItem(getString(R.string.chinese), "zh-CN")
         )
 
         lifecycleScope.launch {
-            val currentLang = DataStoreReference.getSelectedLanguage(requireContext()).first()
+            val currentTag = AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag()
+                ?: DataStoreReference.getSelectedLanguage(requireContext()).first()
+            val currentLang = languages.firstOrNull {
+                it.code.substringBefore('-') == currentTag.substringBefore('-')
+            }?.code ?: "en-US"
             
             val adapter = LanguageAdapter(languages, currentLang) { selectedLang ->
                 updateAppLanguage(selectedLang)
@@ -66,15 +71,13 @@ class LanguageFragment : Fragment() {
     }
 
     private fun updateAppLanguage(languageCode: String) {
-        lifecycleScope.launch {
-            DataStoreReference.setSelectedLanguage(requireContext(), languageCode)
+        val context = requireContext().applicationContext
+        val navController = findNavController()
+        requireActivity().lifecycleScope.launch {
+            DataStoreReference.setSelectedLanguage(context, languageCode)
+            navController.navigateUp()
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
         }
-
-        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(languageCode)
-        AppCompatDelegate.setApplicationLocales(appLocale)
-        
-        // Navigate back after selection
-        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {
