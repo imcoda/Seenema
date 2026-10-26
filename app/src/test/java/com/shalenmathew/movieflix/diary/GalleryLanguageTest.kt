@@ -38,7 +38,7 @@ class GalleryLanguageTest {
         assertEquals("设置",context.getString(R.string.settings))
         assertEquals("应用语言",context.getString(R.string.change_language))
         val adapter=GalleryTimelineAdapter({}, {_,_->})
-        adapter.submitList(listOf(FavouritesEntity(1,MovieResult(id=1,title="Film"),insertedAt="2026-10-26")))
+        adapter.submitMovies(listOf(FavouritesEntity(1,MovieResult(id=1,title="Film"),insertedAt="2026-10-26")))
         val holder=adapter.onCreateViewHolder(FrameLayout(context),1)
         adapter.onBindViewHolder(holder,0)
         assertEquals("2026年10月",(holder.itemView as TextView).text.toString())

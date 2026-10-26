@@ -41,6 +41,8 @@ class DiaryStartupTest {
             host.childFragmentManager.executePendingTransactions();Shadows.shadowOf(Looper.getMainLooper()).idle()
             val detail=host.childFragmentManager.fragments.filterIsInstance<com.shalenmathew.movieflix.presentation.movie_details.MovieDetailsFragment>().last()
             assertEquals("离线电影",detail.binding.fragmentMovieDetailsTitle.text.toString())
+            val personalGalleryId=activity.resources.getIdentifier("fragment_movie_details_gallery_ll","id",activity.packageName)
+            assertNull(detail.requireView().findViewById<android.view.View>(personalGalleryId))
             assertEquals("1999",detail.binding.fragmentMovieDetailsYear.text.toString())
             assertEquals(android.view.View.GONE,detail.binding.fragmentMovieDetailsPlayBtn.visibility)
             assertEquals("Add to gallery",detail.binding.fragmentMovieDetailsFavBtn.contentDescription.toString())
@@ -65,9 +67,8 @@ class DiaryStartupTest {
                 Thread.sleep(20)
             }
             assertEquals(2,grid.adapter!!.itemCount)
-            val manager=grid.layoutManager as androidx.recyclerview.widget.GridLayoutManager
-            assertEquals(manager.spanCount,manager.spanSizeLookup.getSpanSize(0))
-            assertEquals(1,manager.spanSizeLookup.getSpanSize(1))
+            assertTrue(grid.layoutManager is androidx.recyclerview.widget.LinearLayoutManager)
+            assertFalse(grid.layoutManager is androidx.recyclerview.widget.GridLayoutManager)
             host.navController.navigate(R.id.settingsFragment)
             host.childFragmentManager.executePendingTransactions()
             val settings=host.childFragmentManager.primaryNavigationFragment!!
