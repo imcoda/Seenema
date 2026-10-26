@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.shalenmathew.movieflix.data.local_storage.entity.FavouritesEntity
 import com.shalenmathew.movieflix.data.local_storage.entity.HomeFeedEntity
 import com.shalenmathew.movieflix.data.local_storage.entity.IdAndMovieResult
@@ -122,6 +123,16 @@ interface MovieDao {
 
     @Query("SELECT * FROM personal_gallery_table ORDER BY addedAt DESC, id DESC")
     fun getAllGalleryImages(): LiveData<List<com.shalenmathew.movieflix.data.local_storage.entity.PersonalGalleryEntity>>
+
+    @Query("SELECT COUNT(*) FROM personal_gallery_table WHERE mediaId = :mediaId")
+    suspend fun getGalleryImageCount(mediaId: Int): Int
+
+    @Transaction
+    suspend fun insertFirstGalleryImage(image: com.shalenmathew.movieflix.data.local_storage.entity.PersonalGalleryEntity): Boolean {
+        if (getFavMovieById(image.mediaId) == null || getGalleryImageCount(image.mediaId) != 0) return false
+        insertGalleryImage(image)
+        return true
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGalleryImages(images: List<com.shalenmathew.movieflix.data.local_storage.entity.PersonalGalleryEntity>)

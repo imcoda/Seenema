@@ -249,4 +249,6 @@
     <string name="gallery_image_count">%1$d / %2$d</string>
     <string name="previous_year">上一年</string>
     <string name="next_year">下一年</string>
+    <string name="gallery_show_grid">切换为三列海报</string>
+    <string name="gallery_show_cards">切换为横向时间线卡片</string>
 </resources>

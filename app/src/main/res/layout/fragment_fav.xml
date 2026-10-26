@@ -34,11 +34,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                app:liftOnScroll="false"
                 app:elevation="0dp">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:contentScrim="@android:color/transparent"
+                    app:statusBarScrim="@android:color/transparent"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <LinearLayout
@@ -48,25 +52,35 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_85sdp"
-                                android:background="@drawable/gradient_top" />
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/gradient_top">
 
                             <TextView
                                 android:id="@+id/fragment_fav_tv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/gallery_view_toggle"
                                 android:fontFamily="@font/montserrat_medium"
                                 android:gravity="start"
                                 android:paddingStart="@dimen/_15sdp"
                                 android:paddingTop="@dimen/_12sdp"
-                                android:paddingBottom="@dimen/_18sdp"
+                                android:paddingBottom="6dp"
                                 android:text="@string/gallery"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_20ssp" />
+
+                            <ImageButton
+                                android:id="@+id/gallery_view_toggle"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="12dp"
+                                android:padding="12dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_gallery_grid"
+                                android:contentDescription="@string/gallery_show_grid"
+                                app:tint="@color/white" />
                         </RelativeLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -80,10 +94,6 @@
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/item_fav_collection"
                             tools:visibility="visible" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_8sdp" />
 
                     </LinearLayout>
 

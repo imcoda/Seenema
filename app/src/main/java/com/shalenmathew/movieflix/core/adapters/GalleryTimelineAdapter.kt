@@ -51,7 +51,6 @@ class GalleryTimelineAdapter(
         val still: ImageView = view.findViewById(R.id.gallery_film_still)
         private val empty: View = view.findViewById(R.id.gallery_film_empty)
         private val count: TextView = view.findViewById(R.id.gallery_film_count)
-        private val add: View = view.findViewById(R.id.gallery_film_add)
         fun bind(row: Row) {
             val entry = row.movie!!
             val movie = entry.movieResult
@@ -74,8 +73,6 @@ class GalleryTimelineAdapter(
             still.setOnClickListener { if (cover == null) onAddStill(entry.id) else onStillClick(still, cover) }
             empty.visibility = if (cover == null) View.VISIBLE else View.GONE
             // Leave the empty area clean; the whole right side can add its first image.
-            add.visibility = if (cover != null) View.VISIBLE else View.GONE
-            add.setOnClickListener { onAddStill(entry.id) }
             count.visibility = if (row.images.size > 1) View.VISIBLE else View.GONE
             count.text = itemView.context.getString(R.string.gallery_image_count, 1, row.images.size)
         }
