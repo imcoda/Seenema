@@ -29,7 +29,7 @@ class BackupFragment : Fragment() {
     private val exportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                requireContext().contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 startBackupWorker(uri.toString())
             }
         }
@@ -38,7 +38,7 @@ class BackupFragment : Fragment() {
     private val importLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                requireContext().contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 startRestoreWorker(uri.toString())
             }
         }
@@ -73,9 +73,7 @@ class BackupFragment : Fragment() {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "application/zip"
             }
-            com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(),R.style.TrackingAlertDialog)
-                .setTitle("恢复备份？").setMessage("当前记录将被备份中的数据替换。")
-                .setPositiveButton("选择备份"){_,_->importLauncher.launch(intent)}.setNegativeButton("取消",null).show()
+            importLauncher.launch(intent)
         }
     }
 
