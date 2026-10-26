@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/libraryFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.shalenmathew.movieflix.presentation.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_introFragment"
+            app:destination="@id/introFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in_enter"
+            app:exitAnim="@anim/zoom_out_exit"
+            />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in_enter"
+            app:exitAnim="@anim/zoom_out_exit"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="com.shalenmathew.movieflix.presentation.intro.IntroFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_intro" >
+        <action
+            android:id="@+id/action_introFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.shalenmathew.movieflix.presentation.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    
+    <dialog
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.shalenmathew.movieflix.presentation.movie_details.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" >
+        <action
+            android:id="@+id/action_movieDetailsFragment_self"
+            app:destination="@id/movieDetailsFragment" />
+    </dialog>
+    
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.shalenmathew.movieflix.presentation.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/watchListFragment"
+        android:name="com.shalenmathew.movieflix.presentation.watchlist.WatchListFragment"
+        android:label="fragment_watch_list"
+        tools:layout="@layout/fragment_watch_list" >
+        <action
+            android:id="@+id/action_watchListFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.shalenmathew.movieflix.presentation.library.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library">
+        <action
+            android:id="@+id/action_libraryFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_libraryFragment_to_listDetailsFragment"
+            app:destination="@id/listDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listDetailsFragment"
+        android:name="com.shalenmathew.movieflix.presentation.library.ListDetailsFragment"
+        android:label="fragment_list_details"
+        tools:layout="@layout/fragment_list_details">
+        <argument
+            android:name="listId"
+            app:argType="integer" />
+        <argument
+            android:name="listName"
+            app:argType="string" />
+        <argument
+            android:name="listDesc"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_listDetailsFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_howToUseFragment"
+            app:destination="@id/how_to_use_fragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_moreAppsFragment"
+            app:destination="@id/more_apps_fragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutMeFragment"
+            app:destination="@id/about_me_fragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_donationFragment"
+            app:destination="@id/donation_fragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_backupFragment"
+            app:destination="@id/backup_fragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/languageFragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.LanguageFragment"
+        android:label="fragment_language"
+        tools:layout="@layout/fragment_language" />
+
+    <fragment
+        android:id="@+id/how_to_use_fragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.HowToUseFragment"
+        android:label="fragment_how_to_use"
+        tools:layout="@layout/fragment_how_to_use" />
+
+    <fragment
+        android:id="@+id/coming_soon_fragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.ComingSoonFragment"
+        android:label="fragment_coming_soon"
+        tools:layout="@layout/fragment_coming_soon" />
+
+    <fragment
+        android:id="@+id/more_apps_fragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.MoreAppsFragment"
+        android:label="fragment_more_apps"
+        tools:layout="@layout/fragment_more_apps" />
+
+    <fragment
+        android:id="@+id/about_me_fragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.AboutMeFragment"
+        android:label="fragment_about_me"
+        tools:layout="@layout/fragment_about_me" />
+
+    <fragment
+        android:id="@+id/donation_fragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.DonationFragment"
+        android:label="fragment_donation"
+        tools:layout="@layout/fragment_donation" />
+
+    <fragment
+        android:id="@+id/backup_fragment"
+        android:name="com.shalenmathew.movieflix.presentation.settings.BackupFragment"
+        android:label="fragment_backup"
+        tools:layout="@layout/fragment_backup" />
+
+</navigation>
