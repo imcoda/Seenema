@@ -33,9 +33,10 @@ class SettingsFragment : Fragment() {
 
         setupSettingsItems()
         setupFooter()
-        binding.itemAppSuggestion.root.visibility=View.GONE
-        binding.itemDonation.root.visibility=View.GONE
-        binding.itemAboutMe.root.visibility=View.GONE
+        binding.itemTroubleshoot.root.visibility = View.GONE
+        binding.itemAppSuggestion.root.visibility = View.GONE
+        binding.itemDonation.root.visibility = View.GONE
+        binding.itemAboutMe.root.visibility = View.GONE
     }
 
     private fun setupFooter() {
@@ -48,10 +49,10 @@ class SettingsFragment : Fragment() {
 
     private fun setupSettingsItems() {
         // Troubleshoot
-        binding.itemTroubleshoot.itemSettingTitle.text = "TMDB API Key"
+        binding.itemTroubleshoot.itemSettingTitle.text = getString(R.string.learn_how_to_use)
         binding.itemTroubleshoot.itemSettingIcon.setImageResource(R.drawable.ic_troubleshoot)
         binding.itemTroubleshoot.root.setOnClickListener {
-            showApiKeyDialog()
+            findNavController().navigate(R.id.action_settingsFragment_to_howToUseFragment)
         }
 
         // Language
@@ -97,11 +98,6 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun showApiKeyDialog(){
-        val prefs=requireContext().getSharedPreferences("diary",android.content.Context.MODE_PRIVATE)
-        val field=com.google.android.material.textfield.TextInputEditText(requireContext()).apply{hint="TMDB API Key";inputType=android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;setText(prefs.getString("tmdb_key",""))}
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(),R.style.TrackingAlertDialog).setTitle("TMDB API Key").setView(field).setPositiveButton("保存"){_,_->prefs.edit().putString("tmdb_key",field.text.toString().trim()).apply()}.setNegativeButton("取消",null).show()
-    }
     private fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)

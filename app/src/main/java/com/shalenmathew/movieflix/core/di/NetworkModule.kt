@@ -53,7 +53,7 @@ object NetworkModule {
                val  originalHttpUrl = chain.request().url
 
                val url = originalHttpUrl.newBuilder()
-                   .setQueryParameter("api_key", context.getSharedPreferences("diary",Context.MODE_PRIVATE).getString("tmdb_key",BuildConfig.MOVIE_API_KEY).orEmpty())
+                   .setQueryParameter("api_key", BuildConfig.MOVIE_API_KEY)
                    .build()
                request.url(url)
                return@addInterceptor chain.proceed(request.build())

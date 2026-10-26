@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    
-    <item
+<item
         android:id="@+id/searchFragment"
         android:icon="@drawable/ic_nav_search_24"
         android:title="@string/search" />
@@ -10,7 +8,7 @@
     <item
         android:id="@+id/libraryFragment"
         android:icon="@drawable/icon_library"
-        android:title="观影" />
+        android:title="@string/library" />
 
     <item
         android:id="@+id/settingsFragment"

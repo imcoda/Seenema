@@ -64,10 +64,9 @@
                                 android:paddingStart="@dimen/_15sdp"
                                 android:paddingTop="@dimen/_12sdp"
                                 android:paddingBottom="@dimen/_18sdp"
-                                android:text="时间线"
+                                android:text="@string/favourites"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_20ssp" />
-                            <ImageButton android:id="@+id/diary_add" android:layout_width="48dp" android:layout_height="48dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_add" android:background="?attr/selectableItemBackgroundBorderless" app:tint="@color/white" android:contentDescription="添加电影" />
                         </RelativeLayout>
 
                         <androidx.recyclerview.widget.RecyclerView

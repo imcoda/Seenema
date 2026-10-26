@@ -3,20 +3,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_terms">By proceeding you confirm that you are above 18 years of age and agree to the Privacy Policy and Terms of Use</string>
-    <string name="personal_note">个人笔记</string>
-    <string name="click_to_add_your_personal_note">添加笔记</string>
+    <string name="personal_note">Personal Note 📍</string>
+    <string name="click_to_add_your_personal_note">click to add your personal note</string>
     <string name="enter_your_note">Enter your note…</string>
-    <string name="delete_personal_note">删除笔记</string>
+    <string name="delete_personal_note">Delete personal note</string>
     <string name="watch_provider_logo">Watch provider logo</string>
     <string name="where_to_watch">Available On</string>
     <string name="no_streaming_info">No streaming information available</string>
     <string name="release_date">Release Date: %1$s</string>
 
     <!-- Settings -->
-    <string name="settings">设置</string>
+    <string name="settings">Settings</string>
     <string name="home">Home</string>
-    <string name="search">搜索</string>
-    <string name="library">观影</string>
+    <string name="search">Search</string>
+    <string name="library">Library</string>
     <string name="lists">Lists</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="popular_tv_shows">Popular TV Shows</string>
@@ -47,7 +47,7 @@
     <string name="genre_thriller">Thriller</string>
     <string name="genre_war">War</string>
     <string name="genre_western">Western</string>
-    <string name="change_language">语言</string>
+    <string name="change_language">App Language</string>
     <string name="select_language">Select Language</string>
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
@@ -58,7 +58,7 @@
     <string name="app_suggestion">More Apps u might like</string>
     <string name="about_me">About me</string>
     <string name="donation">Your donations helps to keep the app free for other users</string>
-    <string name="source_code">源码</string>
+    <string name="source_code">Source Code</string>
 
     <!-- More Apps -->
     <string name="quotes_app_title">Quotes.app</string>
@@ -78,11 +78,11 @@
     <string name="ko_fi">Ko-fi</string>
 
     <!-- Backup -->
-    <string name="backup_restore">备份与恢复</string>
-    <string name="export_library">导出备份</string>
-    <string name="import_library">恢复备份</string>
-    <string name="export_desc">保存观影记录、笔记、海报和剧照。</string>
-    <string name="import_desc">从 ZIP 备份恢复数据，替换当前记录。</string>
+    <string name="backup_restore">Backup &amp; Restore</string>
+    <string name="export_library">Export Library</string>
+    <string name="import_library">Import Library</string>
+    <string name="export_desc">Save your watchlist, favorites, tracking data &amp; collection to a ZIP file.</string>
+    <string name="import_desc">Restore your data and personalized media from a previously saved ZIP backup file.</string>
 
     <!-- UI Components -->
     <string name="watch_now">Watch Now</string>
@@ -101,9 +101,9 @@
     <string name="birthday">Birthday:</string>
     <string name="birthplace">Birthplace:</string>
     <string name="movies_and_shows">Movies &amp; Shows</string>
-    <string name="fav_placeholder">暂无观影记录</string>
-    <string name="favourites">已看</string>
-    <string name="no_result_found">无结果</string>
+    <string name="fav_placeholder">All your Fav movies show up here — try adding some!</string>
+    <string name="favourites">Favourites</string>
+    <string name="no_result_found">No Result found</string>
     <string name="trending_searches">Trending Searches</string>
     <string name="intro_subtitle">endless entertainment for everyone</string>
     <string name="continue_btn">Countinue  ></string>
@@ -133,7 +133,7 @@
     <string name="cancel">Cancel</string>
     <string name="finally_over">Damn, finally over!</string>
     <string name="add_to_watchlist">Add to Watchlist</string>
-    <string name="add_to_favorites">标记已看</string>
+    <string name="add_to_favorites">Add to Favorites</string>
     <string name="stop_tracking_clear_space">Stop Tracking &amp; Clear Space</string>
     <string name="done">Done</string>
     <string name="more_options">More Options</string>
@@ -160,7 +160,7 @@
     <string name="open_settings">Open Settings</string>
     <string name="setting_item">Setting Item</string>
     <string name="failed_to_load_actor_details">Failed to load actor details</string>
-    <string name="search_hint">搜索电影</string>
+    <string name="search_hint">Search…</string>
     <string name="movie_name_placeholder">Movie Name</string>
     <string name="genres_placeholder">Action • Explosive • Suspenseful • Exciting • Adventure</string>
     <string name="choose_a_new_banner">Choose a New Banner</string>
@@ -188,7 +188,7 @@
     <string name="lbl_percent">%1$d%%</string>
     <string name="msg_finished_episodes">You just finished all %1$d episodes of %2$s.</string>
     <string name="btn_remove_watchlist">Remove from Watchlist</string>
-    <string name="btn_remove_favorites">移除记录</string>
+    <string name="btn_remove_favorites">Remove from Favorites</string>
     <string name="msg_no_recommendation">No recommendation</string>
     <string name="lbl_season_number">Season %1$d</string>
     <string name="btn_remove_schedule">Remove Schedule</string>
@@ -209,8 +209,8 @@
     <string name="msg_banner_updated">Banner updated!</string>
     <string name="msg_added_to_watchlist">Movie added to Watchlist</string>
     <string name="msg_removed_from_watchlist">Movie removed from Watchlist</string>
-    <string name="msg_added_to_favorites">已标记为看过</string>
-    <string name="msg_removed_from_favorites">已移除记录</string>
+    <string name="msg_added_to_favorites">Movie added to Favorites</string>
+    <string name="msg_removed_from_favorites">Movie removed from Favorites</string>
     <string name="msg_no_info_available">No information available</string>
     <string name="msg_schedule_removed">Schedule removed</string>
     <string name="msg_tracking_started">Starting to track series. Caching episodes…</string>
@@ -244,18 +244,18 @@
     <string name="lbl_scheduled_on">Scheduled on: %1$s %2$s</string>
 
     <!-- Poster Customization -->
-    <string name="btn_change_movie_poster">更换海报</string>
+    <string name="btn_change_movie_poster">Change Movie Poster</string>
     <string name="btn_change_show_poster">Change Show Poster</string>
     <string name="lbl_choose_a_new_poster">Choose a New Poster</string>
-    <string name="btn_add_poster_from_gallery">从相册选择</string>
+    <string name="btn_add_poster_from_gallery">Add poster from gallery</string>
     <string name="msg_poster_updated">Poster updated!</string>
     <string name="btn_change_movie_banner">Change Movie Banner</string>
     <string name="btn_change_show_banner">Change Show Banner</string>
 
     <!-- My Collection -->
-    <string name="lbl_my_gallery">个人剧照</string>
-    <string name="lbl_add_to_gallery">添加剧照</string>
-    <string name="lbl_collection_desc"></string>
+    <string name="lbl_my_gallery">Media Gallery</string>
+    <string name="lbl_add_to_gallery">Add to Gallery</string>
+    <string name="lbl_collection_desc">Save your favorite scenes or fan art from gallery</string>
     <string name="btn_remove_from_watchlist">Remove from Watchlist</string>
-    <string name="btn_remove_from_favorites">移除记录</string>
+    <string name="btn_remove_from_favorites">Remove from Favorites</string>
 </resources>

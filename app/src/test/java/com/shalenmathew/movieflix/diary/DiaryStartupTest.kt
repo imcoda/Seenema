@@ -26,6 +26,14 @@ class DiaryStartupTest {
             val nav=activity.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
             assertEquals(3,nav.menu.size())
             assertNull(nav.menu.findItem(R.id.homeFragment))
+            assertEquals("Library",nav.menu.findItem(R.id.libraryFragment).title.toString())
+            val title=activity.findViewById<android.widget.TextView>(R.id.fragment_fav_tv)
+            assertEquals("Favourites",title.text.toString())
+            assertFalse(title.hasOnClickListeners())
+            assertEquals(0,activity.resources.getIdentifier("diary_add","id",activity.packageName))
+            val tabs=activity.findViewById<com.google.android.material.tabs.TabLayout>(R.id.tabLayout)
+            assertEquals(android.view.View.VISIBLE,tabs.visibility)
+            assertEquals(1,tabs.tabCount)
             val movie=com.shalenmathew.movieflix.domain.model.MovieResult(id=-1,title="离线电影",releaseDate="1999",mediaType="movie")
             host.navController.navigate(R.id.movieDetailsFragment,android.os.Bundle().apply{putString(com.shalenmathew.movieflix.core.utils.Constants.MEDIA_SEND_REQUEST_KEY,com.google.gson.Gson().toJson(movie))})
             host.childFragmentManager.executePendingTransactions();Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -43,6 +51,12 @@ class DiaryStartupTest {
                 Thread.sleep(20)
             }
             assertEquals(com.shalenmathew.movieflix.core.utils.DiaryDate.today(),watched?.take(10))
+            detail.binding.fragmentMovieDetailsMoreBtn.performClick()
+            val dialog=org.robolectric.shadows.ShadowDialog.getLatestDialog()
+            assertNotNull(dialog.findViewById<android.view.View>(R.id.more_options_change_poster_item))
+            assertEquals(android.view.View.GONE,dialog.findViewById<android.view.View>(R.id.more_options_schedule_item).visibility)
+            assertEquals(android.view.View.GONE,dialog.findViewById<android.view.View>(R.id.more_options_collection_item).visibility)
+            dialog.dismiss()
         }finally{controller.pause().stop().destroy()}
     }
 }

@@ -118,7 +118,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
     private val customListViewModel: CustomListViewModel by viewModels()
 
     private var isInWatchList: Boolean = false
-    private var watchedDate: String? = null
     private var isFav: Boolean = false
     private var isScheduled: Boolean = false
     private var currentScheduledDate: Long = 0
@@ -200,20 +199,12 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
         iniIt()
         setUpObservers()
         handleClickListeners()
-        binding.fragmentMovieDetailsWatchlistBtn.visibility=View.GONE
-        binding.fragmentMovieDetailsPlayBtn.visibility=View.GONE
-        binding.aboutSection.visibility=View.GONE
-        binding.tabsSection.visibility=View.GONE
-        binding.episodesSection.visibility=View.GONE
-        binding.whereToWatchSection.visibility=View.GONE
-        binding.fragmentMovieDetailsMoreBtn.setOnClickListener {
-            val popup=android.widget.PopupMenu(requireContext(),it)
-            popup.menu.add("更换海报").setOnMenuItemClickListener { showChoosePosterBottomSheet();true }
-            popup.menu.add("更换背景").setOnMenuItemClickListener { showChooseBannerBottomSheet();true }
-            if(isFav)popup.menu.add("观看日期").setOnMenuItemClickListener { showWatchedDatePicker();true }
-            popup.show()
-        }
-        binding.fragmentMovieDetailsLastWatchedRow.setOnClickListener { if(isFav)showWatchedDatePicker() }
+        binding.fragmentMovieDetailsWatchlistBtn.visibility = View.GONE
+        binding.fragmentMovieDetailsPlayBtn.visibility = View.GONE
+        binding.aboutSection.visibility = View.GONE
+        binding.tabsSection.visibility = View.GONE
+        binding.episodesSection.visibility = View.GONE
+        binding.whereToWatchSection.visibility = View.GONE
 
     }
 
@@ -263,9 +254,9 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
                     showToast(ctx, getString(R.string.msg_added_to_favorites))
                 } else {
 
-                    com.google.android.material.dialog.MaterialAlertDialogBuilder(ctx,R.style.TrackingAlertDialog)
-                        .setTitle("移除观影记录？").setPositiveButton("移除"){_,_->favMovieViewModel.deleteFavMovieData(movieResult)}.setNegativeButton("取消",null).show()
-                    return@setOnClickListener
+                    favMovieViewModel.deleteFavMovieData(movieResult)
+                    favIcon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.fav_outline))
+                    showToast(ctx, getString(R.string.msg_removed_from_favorites))
                 }
 
                 isFav = !isFav
@@ -306,12 +297,12 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             onLongClick = { image ->
                 context?.let { ctx ->
                     com.google.android.material.dialog.MaterialAlertDialogBuilder(ctx, R.style.TrackingAlertDialog)
-                        .setTitle("移除剧照？")
-                        .setMessage(null)
-                        .setPositiveButton("移除") { _, _ ->
+                        .setTitle("Delete Image?")
+                        .setMessage("Do you want to remove this image from your collection?")
+                        .setPositiveButton("Delete") { _, _ ->
                             favMovieViewModel.deleteGalleryImage(image)
                         }
-                        .setNegativeButton("取消", null)
+                        .setNegativeButton("Cancel", null)
                         .show()
                 }
             }
@@ -512,10 +503,9 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             if (isFav) {
                 changeFavIcon()
                 list.find { it.id == mediaId }?.let { res ->
-                    watchedDate=res.insertedAt
-                    movieResult=res.movieResult
-                    val image=res.movieResult.backdropPath ?: res.movieResult.posterPath
-                    val path=if(image.isNullOrBlank())null else if(image.startsWith("content://")||image.count{it=='/'}>1)image else TMDB_IMAGE_BASE_URL_W780+image
+                    movieResult = res.movieResult
+                    val image = res.movieResult.backdropPath ?: res.movieResult.posterPath
+                    val path = if (image.isNullOrBlank()) null else if (image.startsWith("content://") || image.count { it == '/' } > 1) image else TMDB_IMAGE_BASE_URL_W780 + image
                     binding.posterImage.loadImage(path)
                     setupPersonalNoteView(mediaId!!, res.personalNote)
                 }
@@ -972,62 +962,9 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             changeBannerItem.visibility = View.GONE
         }
 
-        // Update UI based on current status
-        if (isScheduled) {
-            scheduleIcon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ic_calendar_check))
-            scheduleText.text = getString(R.string.btn_remove_schedule)
-            
-            // Show formatted date in subtitle
-            if (currentScheduledDate > 0) {
-                val dateFormat = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault())
-                val dateStr = dateFormat.format(java.util.Date(currentScheduledDate))
-                scheduleSubtitle.text = getString(R.string.msg_notified_on, dateStr)
-            }
-        } else {
-            scheduleIcon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.baseline_calendar_month_24))
-            scheduleText.text = getString(R.string.btn_schedule_reminder)
-            scheduleSubtitle.text = getString(R.string.msg_schedule_reminder_desc)
-        }
-
-        scheduleItem.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            handleScheduleClick()
-        }
-
-        collectionItem.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            showChooseCustomListBottomSheet()
-        }
-
-        // Setup Tracking Item
-        if (isTVShow) {
-            trackItem.visibility = View.VISIBLE
-            
-            // Default to "Track" state immediately to avoid showing "Untrack" from a previous show
-            trackIcon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.baseline_playlist_add_check_24))
-            trackText.text = getString(R.string.track_series)
-            trackSubtitle.text = getString(R.string.track_series_subtitle)
-
-            // Observe tracking status to update UI dynamically
-            seriesTrackingViewModel.isCurrentSeriesTracked.observe(viewLifecycleOwner) { isTracked ->
-                if (isTracked) {
-                    trackIcon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.baseline_done_all_24))
-                    trackText.text = getString(R.string.btn_untrack_series)
-                    trackSubtitle.text = getString(R.string.msg_untrack_series_desc)
-                } else {
-                    trackIcon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.baseline_playlist_add_check_24))
-                    trackText.text = getString(R.string.track_series)
-                    trackSubtitle.text = getString(R.string.track_series_subtitle)
-                }
-
-                trackItem.setOnClickListener {
-                    bottomSheetDialog.dismiss()
-                    handleTrackClick(isTracked)
-                }
-            }
-        } else {
-            trackItem.visibility = View.GONE
-        }
+        scheduleItem.visibility = View.GONE
+        collectionItem.visibility = View.GONE
+        trackItem.visibility = View.GONE
 
         bottomSheetDialog.setContentView(view)
         bottomSheetDialog.show()
@@ -1661,10 +1598,10 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             }
         }
 
-        isTVShow=false
-        binding.tabsSection.visibility=View.GONE
-        binding.episodesSection.visibility=View.GONE
-        binding.aboutSection.visibility=View.GONE
+        isTVShow = false
+        binding.tabsSection.visibility = View.GONE
+        binding.episodesSection.visibility = View.GONE
+        binding.aboutSection.visibility = View.GONE
     }
 
     override fun onStart() {
@@ -1809,14 +1746,26 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateLastWatchedUI() {
-        binding.fragmentMovieDetailsLastWatched.text="观看日期 · "+watchedDate?.take(10).orEmpty()
-        binding.fragmentMovieDetailsLastWatched.visibility=if(isFav)View.VISIBLE else View.GONE
+        val series = currentSeriesProgressCache
+        if (series != null && series.lastWatchedSeasonNumber != null && series.lastWatchedEpisodeNumber != null) {
+            val showBookmark = isInWatchList || isFav
+            if (showBookmark) {
+                binding.fragmentMovieDetailsLastWatched.apply {
+                    val label = getString(
+                        R.string.lbl_last_watched,
+                        series.lastWatchedSeasonNumber,
+                        series.lastWatchedEpisodeNumber
+                    )
+                    text = SpannableString(label)
+                    visibility = View.VISIBLE
+                }
+            } else {
+                binding.fragmentMovieDetailsLastWatched.visibility = View.GONE
+            }
+        } else {
+            binding.fragmentMovieDetailsLastWatched.visibility = View.GONE
+        }
         updateUserActivityCardVisibility()
-    }
-    private fun showWatchedDatePicker(){
-        val date=(watchedDate?.take(10)?:com.shalenmathew.movieflix.core.utils.DiaryDate.today()).split('-').mapNotNull{it.toIntOrNull()}
-        val cal=java.util.Calendar.getInstance()
-        android.app.DatePickerDialog(requireContext(),{_,y,m,d->mediaId?.let{favMovieViewModel.setWatchedDate(it,String.format(Locale.ROOT,"%04d-%02d-%02d",y,m+1,d))}},date.getOrElse(0){cal.get(java.util.Calendar.YEAR)},date.getOrElse(1){cal.get(java.util.Calendar.MONTH)+1}-1,date.getOrElse(2){cal.get(java.util.Calendar.DAY_OF_MONTH)}).show()
     }
 
     private fun showChoosePosterBottomSheet() {
@@ -2009,7 +1958,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             try {
                 val file=withContext(Dispatchers.IO){com.shalenmathew.movieflix.core.utils.DiaryImages.copy(ctx,uri,"gallery_")}
                 favMovieViewModel.insertGalleryImage(id,file.absolutePath)
-            }catch(e:Exception){showToast(ctx,e.message?:"图片保存失败")}
+            }catch(e:Exception){showToast(ctx,e.message?:"Failed to copy image")}
         }
     }
 
