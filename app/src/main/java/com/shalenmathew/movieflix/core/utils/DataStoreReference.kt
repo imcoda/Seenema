@@ -50,6 +50,6 @@ object DataStoreReference{
     }
 
     fun getSelectedLanguage(context: Context) = context.userDatastore.data.map {
-        it[SELECTED_LANGUAGE] ?: "en-US"
+        it[SELECTED_LANGUAGE] ?: context.resources.configuration.locales[0]?.toLanguageTag() ?: "en-US"
     }
 }
