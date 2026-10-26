@@ -279,4 +279,6 @@
     <string name="gallery_image_count">%1$d / %2$d</string>
     <string name="previous_year">Previous year</string>
     <string name="next_year">Next year</string>
+    <string name="gallery_show_grid">Switch to poster grid</string>
+    <string name="gallery_show_cards">Switch to timeline cards</string>
 </resources>
