@@ -297,12 +297,12 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             onLongClick = { image ->
                 context?.let { ctx ->
                     com.google.android.material.dialog.MaterialAlertDialogBuilder(ctx, R.style.TrackingAlertDialog)
-                        .setTitle("Delete Image?")
-                        .setMessage("Do you want to remove this image from your collection?")
-                        .setPositiveButton("Delete") { _, _ ->
+                        .setTitle(R.string.delete_gallery_image)
+                        .setMessage(R.string.delete_gallery_image_message)
+                        .setPositiveButton(R.string.btn_delete) { _, _ ->
                             favMovieViewModel.deleteGalleryImage(image)
                         }
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.cancel, null)
                         .show()
                 }
             }
@@ -500,6 +500,9 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
 
         favMovieViewModel.getAllMovieData().observe(viewLifecycleOwner) { list ->
             isFav = list.any { it.id == mediaId }
+            binding.fragmentMovieDetailsFavBtn.contentDescription = getString(
+                if (isFav) R.string.btn_remove_favorites else R.string.add_to_favorites
+            )
             if (isFav) {
                 changeFavIcon()
                 list.find { it.id == mediaId }?.let { res ->
@@ -1220,7 +1223,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
                 val layout = textView.layout
                 if (layout != null) {
                     val truncatedText = getTruncatedText(fullText, textView, maxLines)
-                    val moreText = " (More)"
+                    val moreText = getString(R.string.overview_more)
                     val spannableString = SpannableString(truncatedText + moreText)
 
                     // Make "More" bold and clickable
@@ -1271,7 +1274,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
         var endIndex = layout.getLineEnd(lastVisibleLineIndex)
 
         // Reserve space for " (More)" (approximately 7 characters worth of space)
-        val moreText = " (More)"
+        val moreText = getString(R.string.overview_more)
         val paint = textView.paint
         val availableWidth =
             (textView.width - textView.paddingLeft - textView.paddingRight).toFloat()
@@ -1299,7 +1302,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
         isOverviewExpanded = true
         textView.maxLines = Integer.MAX_VALUE // Remove line limit
 
-        val lessText = "\n\n(Less)"
+        val lessText = getString(R.string.overview_less)
         val spannableString = SpannableString(fullOverviewText + lessText)
 
         // Make "Less" bold and clickable
@@ -1852,7 +1855,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             updateMediaPoster(file.absolutePath)
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast(ctx, "Failed to copy image")
+            showToast(ctx, getString(R.string.image_copy_failed))
         }
     }
 
@@ -1948,7 +1951,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             updateMediaBanner(file.absolutePath)
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast(ctx, "Failed to copy image")
+            showToast(ctx, getString(R.string.image_copy_failed))
         }
     }
 
@@ -1958,7 +1961,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             try {
                 val file=withContext(Dispatchers.IO){com.shalenmathew.movieflix.core.utils.DiaryImages.copy(ctx,uri,"gallery_")}
                 favMovieViewModel.insertGalleryImage(id,file.absolutePath)
-            }catch(e:Exception){showToast(ctx,e.message?:"Failed to copy image")}
+            }catch(e:Exception){showToast(ctx,e.message?:getString(R.string.image_copy_failed))}
         }
     }
 
