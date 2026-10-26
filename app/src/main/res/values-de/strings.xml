@@ -11,7 +11,7 @@
     <string name="settings">Einstellungen</string>
     <string name="home">Startseite</string>
     <string name="search">Suche</string>
-    <string name="library">Bibliothek</string>
+    <string name="library">Galerie</string>
     <string name="lists">Listen</string>
     <string name="popular_movies">Beliebte Filme</string>
     <string name="popular_tv_shows">Beliebte Fernsehserien</string>
@@ -75,8 +75,8 @@
     <string name="birthday">Geburtstag:</string>
     <string name="birthplace">Geburtsort:</string>
     <string name="movies_and_shows">Filme &amp; Shows</string>
-    <string name="fav_placeholder">Alle Ihre Lieblingsfilme werden hier angezeigt – versuchen Sie, welche hinzuzufügen!</string>
-    <string name="favourites">Favoriten</string>
+    <string name="fav_placeholder">Galerie</string>
+    <string name="favourites">Galerie</string>
     <string name="no_result_found">Kein Ergebnis gefunden</string>
     <string name="trending_searches">Trend-Suchanfragen</string>
     <string name="intro_subtitle">Endlose Unterhaltung für alle</string>
@@ -106,7 +106,7 @@
     <string name="cancel">Abbrechen</string>
     <string name="finally_over">Verdammt, endlich vorbei!</string>
     <string name="add_to_watchlist">Zur Watchlist hinzufügen</string>
-    <string name="add_to_favorites">Zu Favoriten hinzufügen</string>
+    <string name="add_to_favorites">Zur Galerie hinzufügen</string>
     <string name="new_collection">Neue Sammlung</string>
     <string name="items_count">%1$d Elemente</string>
     <string name="stop_tracking_clear_space">Tracking beenden &amp; Speicherplatz freigeben</string>
@@ -148,4 +148,5 @@
     <string name="add_banner_from_gallery">Banner aus der Galerie hinzufügen</string>
     <string name="lbl_my_gallery">Mediengalerie</string>
     <string name="lbl_add_to_gallery">Zur Galerie hinzufügen</string>
+    <string name="gallery">Galerie</string>
 </resources>
