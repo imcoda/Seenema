@@ -70,6 +70,17 @@ class GalleryCardTest {
             assertEquals(0, stillId)
             val old = PersonalGalleryEntity(11, 9, "/private-old.jpg", 10)
             val new = PersonalGalleryEntity(12, 9, "/private-new.jpg", 20)
+            adapter.submitImages(listOf(old))
+            await { adapter.currentList.last().images.size == 1 }
+            adapter.onBindViewHolder(holder, 1)
+            addId = 0
+            holder.still.performClick()
+            assertEquals(11, stillId)
+            assertEquals(0, addId)
+            assertEquals(View.GONE, card.findViewById<View>(R.id.gallery_film_empty).visibility)
+            assertEquals(View.GONE, card.findViewById<View>(R.id.gallery_film_count).visibility)
+            val addButtonId = context.resources.getIdentifier("gallery_film_add", "id", context.packageName)
+            assertNull(card.findViewById<View>(addButtonId))
             adapter.submitImages(listOf(old, new))
             await { adapter.currentList.last().images.size == 2 }
             adapter.onBindViewHolder(holder, 1)
@@ -77,8 +88,7 @@ class GalleryCardTest {
             assertEquals(12, stillId)
             assertEquals("1 / 2", card.findViewById<TextView>(R.id.gallery_film_count).text.toString())
             assertEquals(View.GONE, card.findViewById<View>(R.id.gallery_film_empty).visibility)
-            card.findViewById<View>(R.id.gallery_film_add).performClick()
-            assertEquals(9, addId)
+            assertEquals(0, addId)
             assertEquals("/official.jpg", adapter.currentList.last().movie!!.movieResult.posterPath)
         } finally { controller.pause().stop().destroy() }
     }

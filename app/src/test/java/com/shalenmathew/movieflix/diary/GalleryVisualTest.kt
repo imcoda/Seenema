@@ -84,7 +84,27 @@ class GalleryVisualTest {
                 if (root.findViewById<android.widget.ImageView>(R.id.gallery_film_still).drawable is android.graphics.drawable.BitmapDrawable) break
                 Thread.sleep(20)
             }
-            capture(root, "MovieFlix-personal6-gallery-layout.png")
+            Shadows.shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(500))
+            list.itemAnimator?.endAnimations()
+            root.measure(View.MeasureSpec.makeMeasureSpec(720, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(1520, View.MeasureSpec.EXACTLY))
+            root.layout(0, 0, 720, 1520)
+            assertTrue(list.isShown)
+            val title = activity.findViewById<View>(R.id.fragment_fav_tv)
+            val titlePosition = IntArray(2).also { title.getLocationOnScreen(it) }
+            val monthPosition = IntArray(2).also { list.findViewHolderForAdapterPosition(0)!!.itemView.getLocationOnScreen(it) }
+            val gap = monthPosition[1] - titlePosition[1] - title.height
+            assertTrue("Gallery title should be close to its first month", gap >= 0 && gap <= 16 * activity.resources.displayMetrics.density)
+            val rendered = Bitmap.createBitmap(root.width, root.height, Bitmap.Config.ARGB_8888)
+            root.draw(Canvas(rendered))
+            assertTrue("The compact Gallery header must retain its dark background", Color.red(rendered.getPixel(4, title.height / 2)) < 80)
+            System.getenv("MOVIEFLIX_PREVIEW_DIR")?.let { dir ->
+                File(dir).mkdirs()
+                File(dir, "MovieFlix-personal7-gallery-layout.png").outputStream().use {
+                    rendered.compress(Bitmap.CompressFormat.PNG, 100, it)
+                }
+            }
+            rendered.recycle()
             val picker = WatchedMonthDialogFragment.newInstance(-101, "2026-10")
             picker.show(activity.supportFragmentManager, "visual-month")
             activity.supportFragmentManager.executePendingTransactions()
@@ -98,7 +118,7 @@ class GalleryVisualTest {
             assertTrue(months.getChildAt(11).right <= months.width)
             assertTrue(sheet.findViewById<View>(R.id.watched_month_save).bottom <= sheet.height)
             assertTrue(months.findViewWithTag<MaterialButton>("month_10").isSelected)
-            capture(sheet, "MovieFlix-personal6-month-sheet.png")
+            capture(sheet, "MovieFlix-personal7-month-sheet.png")
         } finally { controller.pause().stop().destroy() }
     }
 }
