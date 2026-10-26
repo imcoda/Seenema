@@ -1,0 +1,99 @@
+package com.shalenmathew.movieflix.presentation.viewmodels
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.shalenmathew.movieflix.domain.model.CustomListMovie
+import com.shalenmathew.movieflix.domain.model.MovieResult
+import com.shalenmathew.movieflix.domain.model.UserCustomList
+import com.shalenmathew.movieflix.domain.repository.CustomListRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CustomListViewModel @Inject constructor(
+    private val repository: CustomListRepository
+) : ViewModel() {
+
+    val allLists: LiveData<List<UserCustomList>> = repository.getAllLists().asLiveData()
+    val pinnedFavLists: LiveData<List<UserCustomList>> = repository.getPinnedFavLists().asLiveData()
+    val pinnedWatchlistLists: LiveData<List<UserCustomList>> = repository.getPinnedWatchlistLists().asLiveData()
+
+    fun createList(name: String, description: String?) {
+        viewModelScope.launch {
+            repository.createList(name, description)
+        }
+    }
+
+    fun createAndPinToFavList(name: String, description: String?) {
+        viewModelScope.launch {
+            val listId = repository.createList(name, description)
+            repository.updatePinnedToFavStatus(listId.toInt(), true)
+        }
+    }
+
+    fun createAndPinToWatchlist(name: String, description: String?) {
+        viewModelScope.launch {
+            val listId = repository.createList(name, description)
+            repository.updatePinnedToWatchlistStatus(listId.toInt(), true)
+        }
+    }
+
+    fun deleteList(listId: Int) {
+        viewModelScope.launch {
+            repository.deleteList(listId)
+        }
+    }
+
+    fun updateListDetails(listId: Int, name: String, description: String?) {
+        viewModelScope.launch {
+            repository.updateListDetails(listId, name, description)
+        }
+    }
+
+    fun togglePinToFavList(listId: Int, isPinned: Boolean) {
+        viewModelScope.launch {
+            repository.updatePinnedToFavStatus(listId, isPinned)
+        }
+    }
+
+    fun togglePinToWatchlist(listId: Int, isPinned: Boolean) {
+        viewModelScope.launch {
+            repository.updatePinnedToWatchlistStatus(listId, isPinned)
+        }
+    }
+
+    fun addMovieToList(listId: Int, movie: MovieResult) {
+        viewModelScope.launch {
+            repository.addMovieToList(listId, movie)
+        }
+    }
+
+    fun removeMovieFromList(listId: Int, mediaId: Int) {
+        viewModelScope.launch {
+            repository.removeMovieFromList(listId, mediaId)
+        }
+    }
+
+    fun getMoviesInList(listId: Int): LiveData<List<CustomListMovie>> {
+        return repository.getMoviesInList(listId).asLiveData()
+    }
+
+    suspend fun isMovieInList(listId: Int, mediaId: Int): Boolean {
+        return repository.isMovieInList(listId, mediaId)
+    }
+
+    fun updateMoviePosterAcrossLists(mediaId: Int, posterPath: String) {
+        viewModelScope.launch {
+            repository.updateMoviePosterAcrossLists(mediaId, posterPath)
+        }
+    }
+
+    fun updateMovieBannerAcrossLists(mediaId: Int, bannerPath: String) {
+        viewModelScope.launch {
+            repository.updateMovieBannerAcrossLists(mediaId, bannerPath)
+        }
+    }
+}
