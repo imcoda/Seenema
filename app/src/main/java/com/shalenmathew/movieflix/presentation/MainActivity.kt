@@ -8,6 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.shalenmathew.movieflix.R
@@ -25,6 +27,13 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var binding: ActivityMainBinding
     private var quickActionOverlay: QuickActionOverlay? = null
+    private var keyboardVisible = false
+
+    private fun updateBottomNavigation(destinationId: Int? = navController.currentDestination?.id) {
+        val primaryPage = destinationId in setOf(R.id.searchFragment, R.id.libraryFragment, R.id.settingsFragment)
+        binding.bottomNavigationView.visibility = if (primaryPage && !keyboardVisible)
+            android.view.View.VISIBLE else android.view.View.GONE
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,15 +83,16 @@ class MainActivity : AppCompatActivity() {
             // Ensure quick action overlay is dismissed on any navigation
             quickActionOverlay?.dismiss()
 
-            when (destination.id) {
-                R.id.homeFragment, R.id.searchFragment, R.id.libraryFragment, R.id.settingsFragment -> {
-                    binding.bottomNavigationView.visibility = android.view.View.VISIBLE
-                }
-                else -> {
-                    binding.bottomNavigationView.visibility = android.view.View.GONE
-                }
-            }
+            updateBottomNavigation(destination.id)
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            keyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            updateBottomNavigation()
+            // Retain the original fitsSystemWindows handling for status/gesture bars.
+            ViewCompat.onApplyWindowInsets(view, insets)
+        }
+        ViewCompat.requestApplyInsets(binding.root)
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
