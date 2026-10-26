@@ -16,20 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FavMovieViewModel @Inject constructor(private val favMovie: FavMovie, private val dao: com.shalenmathew.movieflix.data.local_storage.MovieDao, @dagger.hilt.android.qualifiers.ApplicationContext private val app: android.content.Context) : ViewModel() {
 
-    fun setWatchedDate(id: Int, date: String) {
-        require(com.shalenmathew.movieflix.core.utils.DiaryDate.valid(date))
-        viewModelScope.launch { dao.updateWatchedDate(id, "$date 12:00:00") }
-    }
-    fun addManual(title: String, year: String, onAdded: (MovieResult) -> Unit) {
-        viewModelScope.launch {
-            var id = -(System.currentTimeMillis() % Int.MAX_VALUE).toInt()
-            while (dao.getFavMovieById(id) != null) id--
-            val movie = MovieResult(id=id, title=title.trim(), releaseDate=year.trim(), mediaType="movie")
-            dao.insertFavMovie(FavouritesEntity(id, movie, insertedAt=com.shalenmathew.movieflix.core.utils.DiaryDate.today()+" 12:00:00"))
-            onAdded(movie)
-        }
-    }
-
     fun insertFavMovieData(movieResult: MovieResult) {
         val favMovieData = IdAndMovieResult(movieResult.id!!, movieResult)
         viewModelScope.launch {
