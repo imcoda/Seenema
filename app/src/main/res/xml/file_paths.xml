@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths><external-media-path name="media" path="."/><files-path name="files" path="."/><cache-path name="backups" path="."/></paths>
+<paths>
+    <cache-path name="shared_images" path="shared_images/" />
+</paths>
