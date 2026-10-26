@@ -58,9 +58,9 @@ class GalleryLanguageTest {
                 Thread.sleep(20)
             }
             val adapter=list.adapter as com.shalenmathew.movieflix.core.adapters.LanguageAdapter
-            assertEquals(6,adapter.itemCount)
+            assertEquals(2,adapter.itemCount)
             val holder=adapter.onCreateViewHolder(list,0)
-            adapter.onBindViewHolder(holder,5)
+            adapter.onBindViewHolder(holder,1)
             assertEquals("中文（简体）",holder.itemView.findViewById<TextView>(R.id.tv_language_name).text.toString())
             holder.itemView.performClick()
             var selected=""
@@ -78,5 +78,34 @@ class GalleryLanguageTest {
             controller.pause().stop().destroy()
             androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.getEmptyLocaleList())
         }
+    }
+
+    @Test @Config(qualifiers="zh-rCN")
+    fun firstLaunchFollowsChineseSystemAndPickerIgnoresStaleEnglishPreference() {
+        val app=RuntimeEnvironment.getApplication()
+        runBlocking { DataStoreReference.setSelectedLanguage(app,"en-US") }
+        val controller=Robolectric.buildActivity(MainActivity::class.java).setup()
+        try {
+            val activity=controller.get()
+            assertEquals("画廊",activity.getString(R.string.gallery))
+            val host=activity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            host.navController.navigate(R.id.languageFragment)
+            host.childFragmentManager.executePendingTransactions()
+            val list=activity.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rv_languages)
+            for(attempt in 0 until 100){
+                Shadows.shadowOf(Looper.getMainLooper()).idle()
+                if(list.adapter!=null)break
+                Thread.sleep(20)
+            }
+            val adapter=list.adapter as com.shalenmathew.movieflix.core.adapters.LanguageAdapter
+            assertEquals(2,adapter.itemCount)
+            val english=adapter.onCreateViewHolder(list,0)
+            adapter.onBindViewHolder(english,0)
+            assertEquals(android.view.View.GONE,english.itemView.findViewById<android.view.View>(R.id.iv_selected).visibility)
+            val chinese=adapter.onCreateViewHolder(list,0)
+            adapter.onBindViewHolder(chinese,1)
+            assertEquals(android.view.View.VISIBLE,chinese.itemView.findViewById<android.view.View>(R.id.iv_selected).visibility)
+            assertEquals("zh-CN",runBlocking{DataStoreReference.getSelectedLanguage(activity).first()})
+        } finally { controller.pause().stop().destroy() }
     }
 }
