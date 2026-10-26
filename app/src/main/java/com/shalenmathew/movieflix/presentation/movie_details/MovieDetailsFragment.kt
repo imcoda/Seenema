@@ -119,6 +119,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
 
     private var isInWatchList: Boolean = false
     private var isFav: Boolean = false
+    private var watchedMonth: String? = null
     private var isScheduled: Boolean = false
     private var currentScheduledDate: Long = 0
     private var scheduleCheckRunnable: Runnable? = null
@@ -199,6 +200,13 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
         iniIt()
         setUpObservers()
         handleClickListeners()
+        childFragmentManager.setFragmentResultListener(WatchedMonthDialogFragment.REQUEST, viewLifecycleOwner) { _, result ->
+            favMovieViewModel.updateWatchedMonth(
+                result.getInt(WatchedMonthDialogFragment.MOVIE_ID),
+                result.getInt(WatchedMonthDialogFragment.YEAR),
+                result.getInt(WatchedMonthDialogFragment.MONTH)
+            )
+        }
         binding.fragmentMovieDetailsWatchlistBtn.visibility = View.GONE
         binding.fragmentMovieDetailsPlayBtn.visibility = View.GONE
         binding.aboutSection.visibility = View.GONE
@@ -210,6 +218,13 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
 
     private fun handleClickListeners() {
         binding.apply {
+
+            fragmentMovieDetailsWatchedMonth.setOnClickListener {
+                val id = mediaId ?: return@setOnClickListener
+                if (!isFav || childFragmentManager.findFragmentByTag(WatchedMonthDialogFragment.REQUEST) != null) return@setOnClickListener
+                WatchedMonthDialogFragment.newInstance(id, watchedMonth)
+                    .show(childFragmentManager, WatchedMonthDialogFragment.REQUEST)
+            }
 
 //            fragmentMovieDetailsWatchBtn.setOnClickListener(){
 //                whereToWatchLink?.let {
@@ -497,6 +512,15 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
 
         favMovieViewModel.getAllMovieData().observe(viewLifecycleOwner) { list ->
             isFav = list.any { it.id == mediaId }
+            watchedMonth = com.shalenmathew.movieflix.core.utils.GalleryTimeline.monthKey(
+                list.find { it.id == mediaId }?.insertedAt)
+            binding.fragmentMovieDetailsWatchedMonth.isVisible = isFav
+            binding.fragmentMovieDetailsWatchedMonth.text = watchedMonth?.let { month ->
+                val locale = resources.configuration.locales[0] ?: Locale.getDefault()
+                val date = SimpleDateFormat("yyyy-MM", Locale.ROOT).parse(month)!!
+                val pattern = android.text.format.DateFormat.getBestDateTimePattern(locale, "yMMMM")
+                getString(R.string.watched_month_value, SimpleDateFormat(pattern, locale).format(date))
+            } ?: getString(R.string.watched_month)
             binding.fragmentMovieDetailsFavBtn.contentDescription = getString(
                 if (isFav) R.string.btn_remove_favorites else R.string.add_to_favorites
             )
@@ -1662,6 +1686,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             val isScheduledVisible = fragmentMovieDetailsScheduledDate.isVisible
             val isLastWatchedVisible = fragmentMovieDetailsLastWatched.isVisible
             val isNoteVisible = fragmentMovieDetailsPersonalNoteLl.isVisible
+            val isWatchedMonthVisible = fragmentMovieDetailsWatchedMonth.isVisible
 
             // Update row visibility
             fragmentMovieDetailsScheduledRow.isVisible = isScheduledVisible
@@ -1672,7 +1697,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
             activityDivider2.isVisible = isLastWatchedVisible && isNoteVisible
 
             // Show card only if at least one item is visible
-            fragmentMovieDetailsActivityCard.isVisible = isScheduledVisible || isLastWatchedVisible || isNoteVisible
+            fragmentMovieDetailsActivityCard.isVisible = isScheduledVisible || isLastWatchedVisible || isNoteVisible || isWatchedMonthVisible
         }
     }
 

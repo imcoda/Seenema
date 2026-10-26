@@ -188,6 +188,23 @@
                                 android:orientation="vertical"
                                 android:padding="@dimen/_10sdp">
 
+                                <TextView
+                                    android:id="@+id/fragment_movie_details_watched_month"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="48dp"
+                                    android:gravity="center_vertical"
+                                    android:drawablePadding="@dimen/_8sdp"
+                                    android:drawableStart="@drawable/baseline_calendar_month_24"
+                                    android:drawableEnd="@drawable/ic_edit"
+                                    android:drawableTint="@color/white"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:background="?attr/selectableItemBackground"
+                                    android:visibility="gone"
+                                    tools:text="Watched: October 2026" />
+
                                 <!-- Scheduled Row -->
                                 <LinearLayout
                                     android:id="@+id/fragment_movie_details_scheduled_row"

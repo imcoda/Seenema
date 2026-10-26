@@ -56,6 +56,13 @@ class FavMovieViewModel @Inject constructor(private val favMovie: FavMovie, priv
         }
     }
 
+    fun updateWatchedMonth(id: Int, year: Int, month: Int) {
+        val date = com.shalenmathew.movieflix.core.utils.DiaryDate.watchedMonthTimestamp(year, month)
+        viewModelScope.launch {
+            dao.updateWatchedDate(id, date)
+        }
+    }
+
     fun updateFavPoster(id: Int, posterPath: String) {
         viewModelScope.launch {
             favMovie.updateFavMoviePoster(id, posterPath)
