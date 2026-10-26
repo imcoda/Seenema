@@ -54,11 +54,7 @@ class FavAdapters(
             }
 
             root.setOnClickListener(){
-                if (isNetworkAvailable(root.context)){
-                    onPosterClick(item)
-                }else{
-                    Toast.makeText(root.context, root.context.getString(R.string.msg_internet_required), Toast.LENGTH_SHORT).show()
-                }
+                onPosterClick(item)
             }
 
             root.setOnLongClickListener {
