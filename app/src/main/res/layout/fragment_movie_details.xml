@@ -541,6 +541,7 @@
 
                                 <com.google.android.material.card.MaterialCardView
                                     android:id="@+id/fragment_movie_details_fav_btn"
+                                    android:contentDescription="@string/add_to_favorites"
                                     style="@style/Widget.Material3.CardView.Filled"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_30sdp"
