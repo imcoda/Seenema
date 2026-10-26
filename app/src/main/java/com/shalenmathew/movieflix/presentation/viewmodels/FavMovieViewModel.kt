@@ -91,4 +91,6 @@ class FavMovieViewModel @Inject constructor(private val favMovie: FavMovie, priv
         return favMovie.getGalleryImagesForMedia(mediaId)
     }
 
+    fun getAllGalleryImages() = dao.getAllGalleryImages()
+
 }
