@@ -122,9 +122,6 @@ class SearchFragment : BaseFragment() {
 
 
     private fun performSearch(searchedMovie: String) {
-        if(requireContext().getSharedPreferences("diary",android.content.Context.MODE_PRIVATE).getString("tmdb_key",com.shalenmathew.movieflix.BuildConfig.MOVIE_API_KEY).isNullOrBlank()) {
-            Toast.makeText(requireContext(),"请先在设置填写 TMDB API Key",Toast.LENGTH_SHORT).show();return
-        }
         // job is a way to control coroutine, we can run multiple coroutine  concurrently or we can cancel a coroutine using a job
         // here what we want is we will put a delay of 500ms before displaying the search result
         // so jobs can be used to pause or put some delay before displaying the result
