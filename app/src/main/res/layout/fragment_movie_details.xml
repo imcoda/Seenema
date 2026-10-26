@@ -567,37 +567,6 @@
 
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_15sdp"
-                                android:orientation="vertical">
-
-                                <com.google.android.material.card.MaterialCardView
-                                    android:id="@+id/fragment_movie_details_more_btn"
-                                    style="@style/Widget.Material3.CardView.Filled"
-                                    android:layout_width="@dimen/_35sdp"
-                                    android:layout_height="@dimen/_30sdp"
-                                    app:cardBackgroundColor="@color/app_color"
-                                    app:cardCornerRadius="8dp">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_gravity="center"
-                                        android:gravity="center">
-
-                                        <ImageView
-                                            android:layout_width="@dimen/_14sdp"
-                                            android:layout_height="@dimen/_14sdp"
-                                            android:src="@drawable/baseline_more_horiz_24"
-                                            app:tint="@color/white" />
-
-                                    </LinearLayout>
-
-                                </com.google.android.material.card.MaterialCardView>
-
-                            </LinearLayout>
 
                         </LinearLayout>
 

@@ -269,9 +269,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
                 shareMediaCard(this@MovieDetailsFragment, movieResult, mediaSharePosterPicker)
             }
 
-            fragmentMovieDetailsMoreBtn.setOnClickListener {
-                showMoreOptionsBottomSheet()
-            }
         }
     }
 
@@ -910,67 +907,6 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
 
     private fun updateScheduleButtonVisibility() {
         // More button is always visible now
-    }
-
-    private fun showMoreOptionsBottomSheet() {
-        val ctx = context ?: return
-        val bottomSheetDialog = BottomSheetDialog(ctx, R.style.SheetDialog)
-        val view = layoutInflater.inflate(R.layout.bottom_sheet_movie_more_options, null)
-
-        val header = view.findViewById<TextView>(R.id.more_options_header)
-        
-        // Change Poster Item
-        val changePosterItem = view.findViewById<View>(R.id.more_options_change_poster_item)
-        val changePosterText = view.findViewById<TextView>(R.id.more_options_change_poster_text)
-        
-        // Change Banner Item
-        val changeBannerItem = view.findViewById<View>(R.id.more_options_change_banner_item)
-        val changeBannerText = view.findViewById<TextView>(R.id.more_options_change_banner_text)
-        
-        val scheduleItem = view.findViewById<View>(R.id.more_options_schedule_item)
-        val scheduleIcon = view.findViewById<android.widget.ImageView>(R.id.more_options_schedule_icon)
-        val scheduleText = view.findViewById<TextView>(R.id.more_options_schedule_text)
-        val scheduleSubtitle = view.findViewById<TextView>(R.id.more_options_schedule_subtitle)
-        
-        val trackItem = view.findViewById<View>(R.id.more_options_track_item)
-        val trackIcon = view.findViewById<android.widget.ImageView>(R.id.more_options_track_icon)
-        val trackText = view.findViewById<TextView>(R.id.more_options_track_text)
-        val trackSubtitle = view.findViewById<TextView>(R.id.more_options_track_subtitle)
-
-        val collectionItem = view.findViewById<View>(R.id.more_options_collection_item)
-
-        header.text = getString(R.string.more_options)
-
-        // Setup Change Poster Option - Limited to Favorites only
-        if (isFav) {
-            changePosterItem.visibility = View.VISIBLE
-            changePosterText.text = if (isTVShow) getString(R.string.btn_change_show_poster) else getString(R.string.btn_change_movie_poster)
-            changePosterItem.setOnClickListener {
-                bottomSheetDialog.dismiss()
-                showChoosePosterBottomSheet()
-            }
-        } else {
-            changePosterItem.visibility = View.GONE
-        }
-
-        // Setup Change Banner Option - Limited to Favorites only
-        if (isFav) {
-            changeBannerItem.visibility = View.VISIBLE
-            changeBannerText.text = if (isTVShow) getString(R.string.btn_change_show_banner) else getString(R.string.btn_change_movie_banner)
-            changeBannerItem.setOnClickListener {
-                bottomSheetDialog.dismiss()
-                showChooseBannerBottomSheet()
-            }
-        } else {
-            changeBannerItem.visibility = View.GONE
-        }
-
-        scheduleItem.visibility = View.GONE
-        collectionItem.visibility = View.GONE
-        trackItem.visibility = View.GONE
-
-        bottomSheetDialog.setContentView(view)
-        bottomSheetDialog.show()
     }
 
     private fun handleTrackClick(isTracked: Boolean) {

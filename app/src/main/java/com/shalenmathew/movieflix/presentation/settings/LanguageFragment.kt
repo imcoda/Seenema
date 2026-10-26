@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.shalenmathew.movieflix.R
 import com.shalenmathew.movieflix.core.adapters.LanguageAdapter
 import com.shalenmathew.movieflix.core.utils.DataStoreReference
+import com.shalenmathew.movieflix.core.utils.AppLanguage
 import com.shalenmathew.movieflix.databinding.FragmentLanguageBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -45,19 +46,11 @@ class LanguageFragment : Fragment() {
     private fun setupRecyclerView() {
         val languages = listOf(
             LanguageItem(getString(R.string.english), "en-US"),
-            LanguageItem(getString(R.string.spanish), "es-ES"),
-            LanguageItem(getString(R.string.hindi), "hi-IN"),
-            LanguageItem(getString(R.string.french), "fr-FR"),
-            LanguageItem(getString(R.string.german), "de-DE"),
             LanguageItem(getString(R.string.chinese), "zh-CN")
         )
 
         lifecycleScope.launch {
-            val currentTag = AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag()
-                ?: DataStoreReference.getSelectedLanguage(requireContext()).first()
-            val currentLang = languages.firstOrNull {
-                it.code.substringBefore('-') == currentTag.substringBefore('-')
-            }?.code ?: "en-US"
+            val currentLang = AppLanguage.displayed(requireContext())
             
             val adapter = LanguageAdapter(languages, currentLang) { selectedLang ->
                 updateAppLanguage(selectedLang)
