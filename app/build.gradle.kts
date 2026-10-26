@@ -37,8 +37,8 @@ android {
         applicationId = "ink.c0d4.movieflix"
         minSdk = 24
         targetSdk = 36
-        versionCode = 104
-        versionName = "2.2-personal.5"
+        versionCode = 105
+        versionName = "2.2-personal.6"
         resourceConfigurations += listOf("en", "zh")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
