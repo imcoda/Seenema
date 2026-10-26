@@ -16,7 +16,7 @@ import com.shalenmathew.movieflix.R
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ConcatAdapter
-import com.shalenmathew.movieflix.core.adapters.DiaryAdapter as FavAdapters
+import com.shalenmathew.movieflix.core.adapters.FavAdapters
 import com.shalenmathew.movieflix.core.adapters.FavCollectionsAdapter
 import com.shalenmathew.movieflix.core.adapters.FavCreateCollectionAdapter
 import com.shalenmathew.movieflix.core.utils.ClickHandler
@@ -136,17 +136,7 @@ class FavFragment : Fragment() {
             }
         )
         val spanCount = resources.getInteger(R.integer.grid_span_count)
-        val grid = GridLayoutManager(requireContext(), spanCount)
-        grid.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup(){override fun getSpanSize(position:Int)=if(adapter.isHeading(position))spanCount else 1}
-        binding.fragmentFavRv.layoutManager = grid
-        binding.fragmentFavTv.text = "时间线 ▾"
-        binding.fragmentFavTv.setOnClickListener {
-            val popup=android.widget.PopupMenu(requireContext(),it)
-            popup.menu.add("时间线").setOnMenuItemClickListener { adapter.timeline=true;binding.fragmentFavTv.text="时间线 ▾";true }
-            popup.menu.add("海报").setOnMenuItemClickListener { adapter.timeline=false;binding.fragmentFavTv.text="海报 ▾";true }
-            popup.show()
-        }
-        binding.diaryAdd.setOnClickListener { showManualMovieDialog() }
+        binding.fragmentFavRv.layoutManager = GridLayoutManager(requireContext(), spanCount)
         binding.fragmentFavRv.adapter = adapter
     }
 
@@ -157,12 +147,27 @@ class FavFragment : Fragment() {
 
         val actions = mutableListOf<QuickActionOverlay.ActionItem>()
         
-        actions.add(QuickActionOverlay.ActionItem(R.drawable.ic_calendar_check,"观看日期"){showWatchedDateDialog(favouritesEntity)})
-        actions.add(QuickActionOverlay.ActionItem(R.drawable.ic_gallery,"更换海报"){showChoosePosterBottomSheet(favouritesEntity)})
-        actions.add(QuickActionOverlay.ActionItem(R.drawable.baseline_delete_24,"移除记录"){
-            com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(),R.style.TrackingAlertDialog)
-                .setTitle("移除观影记录？").setPositiveButton("移除"){_,_->favMovieViewModel.deleteFavMovieData(movie)}.setNegativeButton("取消",null).show()
-        })
+        actions.add(QuickActionOverlay.ActionItem(
+            icon = R.drawable.baseline_share_24,
+            label = getString(R.string.share).plus(" Movie"),
+            action = { shareMediaCard(this, movie, mediaSharePosterPicker) }
+        ))
+
+        actions.add(QuickActionOverlay.ActionItem(
+            icon = R.drawable.baseline_delete_24,
+            label = getString(R.string.btn_remove_from_favorites),
+            action = { 
+                favMovieViewModel.deleteFavMovieData(movie)
+                showToast(requireContext(), getString(R.string.msg_removed_from_favorites))
+            }
+        ))
+
+        actions.add(QuickActionOverlay.ActionItem(
+            icon = R.drawable.ic_gallery,
+            label = getString(if (isTV) R.string.btn_change_show_poster else R.string.btn_change_movie_poster),
+            action = { showChoosePosterBottomSheet(favouritesEntity) }
+        ))
+
         mainActivity.showQuickActionMenu(
             targetView = targetView,
             actions = actions
@@ -346,24 +351,6 @@ class FavFragment : Fragment() {
 
         dialog.setContentView(view)
         dialog.show()
-    }
-
-    private fun showWatchedDateDialog(entity:FavouritesEntity){
-        val parts=(entity.insertedAt?.take(10)?:com.shalenmathew.movieflix.core.utils.DiaryDate.today()).split('-').mapNotNull{it.toIntOrNull()}
-        val calendar=java.util.Calendar.getInstance()
-        android.app.DatePickerDialog(requireContext(),{_,y,m,d->favMovieViewModel.setWatchedDate(entity.id,String.format(java.util.Locale.ROOT,"%04d-%02d-%02d",y,m+1,d))},parts.getOrElse(0){calendar.get(java.util.Calendar.YEAR)},parts.getOrElse(1){calendar.get(java.util.Calendar.MONTH)+1}-1,parts.getOrElse(2){calendar.get(java.util.Calendar.DAY_OF_MONTH)}).show()
-    }
-    private fun showManualMovieDialog(){
-        val layout=android.widget.LinearLayout(requireContext()).apply{orientation=android.widget.LinearLayout.VERTICAL;setPadding(40,16,40,0)}
-        val title=TextInputEditText(requireContext()).apply{hint="片名";maxLines=1};val year=TextInputEditText(requireContext()).apply{hint="年份（选填）";inputType=android.text.InputType.TYPE_CLASS_NUMBER;maxLines=1}
-        layout.addView(title);layout.addView(year)
-        val dialog=com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(),R.style.TrackingAlertDialog).setTitle("添加电影").setView(layout).setPositiveButton("添加",null).setNegativeButton("取消",null).create()
-        dialog.setOnShowListener{dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener{
-            if(title.text.isNullOrBlank()){title.error="请填写片名";return@setOnClickListener}
-            favMovieViewModel.addManual(title.text.toString(),year.text.toString()){movie->
-                if(isAdded)findNavController().navigate(R.id.movieDetailsFragment,Bundle().apply{putString(Constants.MEDIA_SEND_REQUEST_KEY,Gson().toJson(movie))})
-            };dialog.dismiss()
-        }};dialog.show()
     }
 
     private fun observe() {
