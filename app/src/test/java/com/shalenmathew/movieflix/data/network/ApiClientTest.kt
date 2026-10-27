@@ -57,6 +57,28 @@ class ApiClientTest {
        mockWebServer.shutdown()
     }
 
+    @Test
+    fun `search preserves Chinese query and movie metadata`() = runTest {
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody("""
+            {"page":1,"total_pages":1,"total_results":1,"results":[
+                {"id":194,"title":"天使爱美丽","original_title":"Amélie",
+                 "poster_path":"/poster.jpg","media_type":"movie","vote_average":7.9}
+            ]}
+        """.trimIndent()))
+        val response = apiClient.fetchMovieSearchedResultsApiCall(lang = "zh-CN", searchQuery = "天使爱美丽")
+        assertTrue(response.isSuccessful)
+        val movie = response.body()!!.toMovieList().results.single()
+        assertEquals(194, movie.id)
+        assertEquals("天使爱美丽", movie.title)
+        assertEquals("/poster.jpg", movie.posterPath)
+        assertEquals("movie", movie.mediaType)
+        val request = mockWebServer.takeRequest().requestUrl!!
+        assertEquals("/3/search/multi", request.encodedPath)
+        assertEquals("天使爱美丽", request.queryParameter("query"))
+        assertEquals("zh-CN", request.queryParameter("language"))
+        assertEquals("false", request.queryParameter("include_adult"))
+    }
+
     // instead of testing whole api we will just test diff category that covers all api
 
     // Category A: Verifies interceptors, default parameters, and standard list parsing.
