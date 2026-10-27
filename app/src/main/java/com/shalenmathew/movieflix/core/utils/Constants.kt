@@ -2,7 +2,7 @@ package com.shalenmathew.movieflix.core.utils
 
 object Constants {
 
-   const val BASE_URL ="https://api.themoviedb.org/"
+   const val BASE_URL ="https://api.tmdb.org/"
 
     const val POPULAR_MOVIES = "Popular Movies"
     const val POPULAR_TV_SHOWS = "Popular Tv Shows"
