@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20px"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@string/created_on_movieflix"
+            android:text="@string/created_on_seenema"
             android:textColor="@color/white"
             android:textSize="26px" />
 

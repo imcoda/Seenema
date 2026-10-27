@@ -1,0 +1,51 @@
+package ink.c0d4.seenema.core.adapters
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import ink.c0d4.seenema.R
+import ink.c0d4.seenema.databinding.ItemSeasonSelectorBinding
+import ink.c0d4.seenema.domain.model.TVSeasonBasic
+
+class SeasonSelectorAdapter(
+    private val seasons: List<TVSeasonBasic>,
+    private val onSeasonSelected: (TVSeasonBasic) -> Unit
+) : RecyclerView.Adapter<SeasonSelectorAdapter.ViewHolder>() {
+
+    inner class ViewHolder(private val binding: ItemSeasonSelectorBinding) : 
+        RecyclerView.ViewHolder(binding.root) {
+        
+        fun bind(season: TVSeasonBasic) {
+            binding.apply {
+                val seasonNumber = season.seasonNumber ?: 0
+                seasonTitle.text = season.name ?: root.context.getString(R.string.lbl_season_number, seasonNumber)
+                
+                val episodeCount = season.episodeCount ?: 0
+                seasonInfo.text = if (episodeCount > 0) {
+                    "$episodeCount episode${if (episodeCount != 1) "s" else ""}"
+                } else {
+                    root.context.getString(R.string.msg_no_episodes)
+                }
+                
+                root.setOnClickListener {
+                    onSeasonSelected(season)
+                }
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemSeasonSelectorBinding.inflate(
+            LayoutInflater.from(parent.context), 
+            parent, 
+            false
+        )
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(seasons[position])
+    }
+
+    override fun getItemCount() = seasons.size
+}

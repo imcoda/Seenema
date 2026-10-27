@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieFlix</string>
+    <string name="app_name">Seenema</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_terms">By proceeding you confirm that you are above 18 years of age and agree to the Privacy Policy and Terms of Use</string>
@@ -145,7 +145,7 @@
     <string name="new_collection">New Collection</string>
     <string name="items_count">%1$d Items</string>
     <string name="save_to_custom_list">Save to one of your custom lists</string>
-    <string name="created_on_movieflix">MovieFlix</string>
+    <string name="created_on_seenema">Seenema</string>
     <string name="template_classic_dark" translatable="false">Classic Dark</string>
     <string name="template_minimal_poster" translatable="false">Minimal Poster</string>
     <string name="label_client" translatable="false">CLIENT</string>

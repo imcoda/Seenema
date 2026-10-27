@@ -1,0 +1,216 @@
+package ink.c0d4.seenema.presentation.home
+
+import android.os.Build
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.SnapHelper
+import ink.c0d4.seenema.R
+import ink.c0d4.seenema.core.adapters.BannerAdapter
+import ink.c0d4.seenema.core.adapters.HomeAdapter
+import ink.c0d4.seenema.core.utils.ClickHandler
+import ink.c0d4.seenema.core.utils.Constants
+import ink.c0d4.seenema.core.utils.NetworkResults
+import ink.c0d4.seenema.core.utils.gone
+import ink.c0d4.seenema.core.utils.openNetworkSettings
+import ink.c0d4.seenema.core.utils.visible
+import ink.c0d4.seenema.databinding.FragmentHomeBinding
+import ink.c0d4.seenema.domain.model.HomeFeedData
+import ink.c0d4.seenema.domain.model.MovieResult
+import ink.c0d4.seenema.presentation.base.BaseFragment
+import ink.c0d4.seenema.presentation.viewmodels.HomeInfoViewModel
+import ink.c0d4.seenema.presentation.viewmodels.ScheduledViewModel
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
+
+@AndroidEntryPoint
+class HomeFragment : BaseFragment() {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+    private val homeInfoViewModel: HomeInfoViewModel by viewModels() // initializing viewmodel
+    private val scheduledViewModel: ScheduledViewModel by viewModels()
+    private lateinit var bannerAdapter: BannerAdapter
+    private lateinit var homeAdapter: HomeAdapter
+    private var bannerList: List<MovieResult> = arrayListOf()
+    private var snapHelper: SnapHelper = PagerSnapHelper()
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { _ -> }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        handleClickListeners()
+        observer()
+        requestNotificationPermission()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permission = android.Manifest.permission.POST_NOTIFICATIONS
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    permission
+                ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    private fun handleClickListeners() {
+        binding.apply {
+
+            fragmentHomeNetworkCheck.layoutNetworkBtn.setOnClickListener {
+                openNetworkSettings(requireContext())
+            }
+
+            fragmentHomeWatchNowBtn.setOnClickListener {
+                val layoutManger =
+                    binding.fragmentHomeBannerImgRv.layoutManager as LinearLayoutManager
+                val firstVisibleItem = layoutManger.findFirstVisibleItemPosition()
+                openDetailFragment(bannerList[firstVisibleItem])
+            }
+        }
+    }
+
+    private fun initView() {
+        bannerAdapter = BannerAdapter()
+        homeAdapter = HomeAdapter(
+            onPosterClick = { openDetailFragment(it) },
+            onLoadMore = { categoryTitle ->
+                homeInfoViewModel.loadMoreMoviesForCategory(categoryTitle)
+            }
+        )
+
+        binding.apply {
+            fragmentHomeBannerImgRv.adapter = bannerAdapter
+            fragmentHomeHomeFeedRv.adapter = homeAdapter
+            snapHelper.attachToRecyclerView(fragmentHomeBannerImgRv)
+            fragmentHomeIndicator.attachToRecyclerView(fragmentHomeBannerImgRv)
+        }
+    }
+
+
+
+
+
+    private fun openDetailFragment(it: MovieResult) {
+
+        if(!ClickHandler.isClickAllowed()){
+            return
+        }
+
+        if (findNavController().currentDestination?.id != R.id.homeFragment) {
+            return
+        }
+
+        val bundle = Bundle()
+        bundle.putString(Constants.MEDIA_SEND_REQUEST_KEY, Gson().toJson(it))
+
+        findNavController().navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
+    }
+
+
+
+    private fun observer() {
+        homeInfoViewModel.homeFeedList.observe(viewLifecycleOwner) {
+            it
+
+            when (it) {
+                is NetworkResults.Success -> binding.apply {
+                    shimmerLoading.root.gone()
+                    it.data?.let { homeFeedData: HomeFeedData ->
+                        fragmentHomeHomeFeedLayout.visible()
+                        bannerList = homeFeedData.bannerMovie
+                        bannerAdapter.submitList(homeFeedData.bannerMovie)
+                        homeAdapter.submitList(homeFeedData.homeFeedResponseList)
+                    }
+                }
+
+                is NetworkResults.Error -> binding.apply {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    shimmerLoading.root.gone()
+                    fragmentHomeHomeFeedLayout.gone()
+                }
+
+                is NetworkResults.Loading -> binding.apply {
+                    shimmerLoading.root.visible()
+                    fragmentHomeHomeFeedLayout.gone()
+                }
+            }
+        }
+
+        // Observe pagination results
+        homeInfoViewModel.loadMoreMovies.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is NetworkResults.Success -> {
+                    result.data?.let { (categoryTitle, movieList) ->
+                        homeAdapter.addMoreItemsToCategory(categoryTitle, movieList.results)
+                        homeAdapter.setLoadingForCategory(categoryTitle, false)
+                    }
+                }
+
+                is NetworkResults.Error -> {
+                    Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResults.Loading -> {
+                    // Loading state is handled by adapter
+                }
+            }
+        }
+
+        // Observe scheduled movies and update icon visibility
+        scheduledViewModel.getAllScheduledMovies().observe(viewLifecycleOwner) { scheduledList ->
+            val ids = scheduledList.mapNotNull { entity -> entity.id }.toSet()
+            homeAdapter.updateScheduledMovies(ids)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        requireActivity().runOnUiThread {
+            binding.fragmentHomeNetworkCheck.layoutNtwContainer.visible()
+            binding.noInternetMascot.visible()
+        }
+    }
+
+    override fun onNetworkAvailable() {
+        super.onNetworkAvailable()
+        requireActivity().runOnUiThread {
+            binding.fragmentHomeNetworkCheck.layoutNtwContainer.gone()
+            binding.noInternetMascot.gone()
+            // This logic is still correct.
+            homeInfoViewModel.getMovieInfoData()
+        }
+    }
+}   

@@ -1,0 +1,62 @@
+package ink.c0d4.seenema.core.notifications
+
+import android.content.Context
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import ink.c0d4.seenema.core.utils.Constants
+import ink.c0d4.seenema.domain.model.MovieResult
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+
+class MovieScheduler @Inject constructor(
+    private val context: Context
+) {
+
+    fun scheduleMovieNotification(movieResult: MovieResult, scheduledTimeMillis: Long, customMessage: String? = null) {
+        val currentTime = System.currentTimeMillis()
+        val delay = scheduledTimeMillis - currentTime
+
+        if (delay <= 0) {
+            // Time has already passed, don't schedule
+            return
+        }
+
+        // Construct full poster URL for notification image
+        val posterUrl = movieResult.backdropPath?.let {
+            Constants.TMDB_IMAGE_BASE_URL_W500 + it
+        }
+        
+        val inputData = Data.Builder()
+            .putInt(ScheduledMovieWorker.KEY_MOVIE_ID, movieResult.id ?: 0)
+            .putString(ScheduledMovieWorker.KEY_MOVIE_TITLE, movieResult.title ?: movieResult.name ?: "Movie")
+            .putString(ScheduledMovieWorker.KEY_MOVIE_POSTER, posterUrl)
+            .putLong(ScheduledMovieWorker.KEY_SCHEDULED_DATE, scheduledTimeMillis)
+            .putString(ScheduledMovieWorker.KEY_CUSTOM_MESSAGE, customMessage)
+            .build()
+
+        val workRequest = OneTimeWorkRequestBuilder<ScheduledMovieWorker>()
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInputData(inputData)
+            .addTag(SCHEDULED_WORK_TAG)
+            .build()
+
+        val workName = "${ScheduledMovieWorker.WORK_NAME_PREFIX}${movieResult.id}"
+
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            workName,
+            ExistingWorkPolicy.REPLACE,
+            workRequest
+        )
+    }
+
+    fun cancelMovieNotification(movieId: Int) {
+        val workName = "${ScheduledMovieWorker.WORK_NAME_PREFIX}$movieId"
+        WorkManager.getInstance(context).cancelUniqueWork(workName)
+    }
+
+    companion object {
+        private const val SCHEDULED_WORK_TAG = "scheduled_movies"
+    }
+}

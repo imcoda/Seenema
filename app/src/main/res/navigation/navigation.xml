@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.shalenmathew.movieflix.presentation.splash.SplashFragment"
+        android:name="ink.c0d4.seenema.presentation.splash.SplashFragment"
         android:label="SplashFragment" >
         <action
             android:id="@+id/action_splashFragment_to_introFragment"
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/introFragment"
-        android:name="com.shalenmathew.movieflix.presentation.intro.IntroFragment"
+        android:name="ink.c0d4.seenema.presentation.intro.IntroFragment"
         android:label="fragment_intro"
         tools:layout="@layout/fragment_intro" >
         <action
@@ -40,7 +40,7 @@
     
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.shalenmathew.movieflix.presentation.home.HomeFragment"
+        android:name="ink.c0d4.seenema.presentation.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -50,7 +50,7 @@
     
     <dialog
         android:id="@+id/movieDetailsFragment"
-        android:name="com.shalenmathew.movieflix.presentation.movie_details.MovieDetailsFragment"
+        android:name="ink.c0d4.seenema.presentation.movie_details.MovieDetailsFragment"
         android:label="fragment_movie_details"
         tools:layout="@layout/fragment_movie_details" >
         <action
@@ -60,7 +60,7 @@
     
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.shalenmathew.movieflix.presentation.search.SearchFragment"
+        android:name="ink.c0d4.seenema.presentation.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -70,7 +70,7 @@
     
     <fragment
         android:id="@+id/watchListFragment"
-        android:name="com.shalenmathew.movieflix.presentation.watchlist.WatchListFragment"
+        android:name="ink.c0d4.seenema.presentation.watchlist.WatchListFragment"
         android:label="fragment_watch_list"
         tools:layout="@layout/fragment_watch_list" >
         <action
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/libraryFragment"
-        android:name="com.shalenmathew.movieflix.presentation.library.LibraryFragment"
+        android:name="ink.c0d4.seenema.presentation.library.LibraryFragment"
         android:label="fragment_library"
         tools:layout="@layout/fragment_library">
         <action
@@ -93,7 +93,7 @@
 
     <fragment
         android:id="@+id/listDetailsFragment"
-        android:name="com.shalenmathew.movieflix.presentation.library.ListDetailsFragment"
+        android:name="ink.c0d4.seenema.presentation.library.ListDetailsFragment"
         android:label="fragment_list_details"
         tools:layout="@layout/fragment_list_details">
         <argument
@@ -113,7 +113,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.SettingsFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings">
         <action
@@ -138,43 +138,43 @@
 
     <fragment
         android:id="@+id/languageFragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.LanguageFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.LanguageFragment"
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" />
 
     <fragment
         android:id="@+id/how_to_use_fragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.HowToUseFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.HowToUseFragment"
         android:label="fragment_how_to_use"
         tools:layout="@layout/fragment_how_to_use" />
 
     <fragment
         android:id="@+id/coming_soon_fragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.ComingSoonFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.ComingSoonFragment"
         android:label="fragment_coming_soon"
         tools:layout="@layout/fragment_coming_soon" />
 
     <fragment
         android:id="@+id/more_apps_fragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.MoreAppsFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.MoreAppsFragment"
         android:label="fragment_more_apps"
         tools:layout="@layout/fragment_more_apps" />
 
     <fragment
         android:id="@+id/about_me_fragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.AboutMeFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.AboutMeFragment"
         android:label="fragment_about_me"
         tools:layout="@layout/fragment_about_me" />
 
     <fragment
         android:id="@+id/donation_fragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.DonationFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.DonationFragment"
         android:label="fragment_donation"
         tools:layout="@layout/fragment_donation" />
 
     <fragment
         android:id="@+id/backup_fragment"
-        android:name="com.shalenmathew.movieflix.presentation.settings.BackupFragment"
+        android:name="ink.c0d4.seenema.presentation.settings.BackupFragment"
         android:label="fragment_backup"
         tools:layout="@layout/fragment_backup" />
 
