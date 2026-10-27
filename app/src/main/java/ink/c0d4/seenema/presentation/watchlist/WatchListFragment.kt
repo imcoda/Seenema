@@ -1,0 +1,307 @@
+package ink.c0d4.seenema.presentation.watchlist
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import ink.c0d4.seenema.R
+import android.view.MotionEvent
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.RecyclerView
+import ink.c0d4.seenema.core.adapters.FavCollectionsAdapter
+import ink.c0d4.seenema.core.adapters.FavCreateCollectionAdapter
+import ink.c0d4.seenema.core.adapters.WatchListAdapter
+import ink.c0d4.seenema.core.utils.ClickHandler
+import ink.c0d4.seenema.core.utils.Constants
+import ink.c0d4.seenema.core.utils.gone
+import ink.c0d4.seenema.core.utils.visible
+import ink.c0d4.seenema.databinding.FragmentWatchListBinding
+import ink.c0d4.seenema.data.local_storage.entity.WatchListEntity
+import ink.c0d4.seenema.presentation.viewmodels.LibrarySearchViewModel
+import ink.c0d4.seenema.presentation.viewmodels.ScheduledViewModel
+import ink.c0d4.seenema.presentation.viewmodels.WatchListViewModel
+import ink.c0d4.seenema.presentation.viewmodels.CustomListViewModel
+import ink.c0d4.seenema.presentation.MainActivity
+import ink.c0d4.seenema.core.utils.QuickActionOverlay
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputEditText
+import ink.c0d4.seenema.core.utils.shareMediaCard
+import ink.c0d4.seenema.core.utils.MediaSharePosterPicker
+import ink.c0d4.seenema.core.utils.showToast
+import ink.c0d4.seenema.core.utils.shareMovie
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+@AndroidEntryPoint
+class WatchListFragment : Fragment() {
+    private val mediaSharePosterPicker = MediaSharePosterPicker(this)
+
+    private val watchListViewModel: WatchListViewModel by viewModels()
+    private val scheduledViewModel: ScheduledViewModel by viewModels()
+    private val librarySearchVm: LibrarySearchViewModel by activityViewModels()
+    private val customListViewModel: CustomListViewModel by viewModels()
+
+    private var _binding: FragmentWatchListBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var adapter: WatchListAdapter
+    private lateinit var collectionsAdapter: FavCollectionsAdapter
+    private lateinit var createCollectionAdapter: FavCreateCollectionAdapter
+
+    private var fullList: List<WatchListEntity> = emptyList()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentWatchListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        inIt()
+        observer()
+        observeSearch()
+    }
+
+    private fun inIt() {
+        watchListViewModel.getAllWatchListData()
+
+        createCollectionAdapter = FavCreateCollectionAdapter(
+            onClick = { showCreateListDialog() }
+        )
+
+        collectionsAdapter = FavCollectionsAdapter(
+            onCollectionClick = { list ->
+                if (ClickHandler.isClickAllowed() && findNavController().currentDestination?.id == R.id.libraryFragment) {
+                    val bundle = Bundle().apply {
+                        putInt("listId", list.id)
+                        putString("listName", list.name)
+                        putString("listDesc", list.description)
+                    }
+                    findNavController().navigate(R.id.action_libraryFragment_to_listDetailsFragment, bundle)
+                }
+            }
+        )
+
+        val concatAdapter = ConcatAdapter(createCollectionAdapter, collectionsAdapter)
+        binding.fragmentWatchListCollectionsRv.adapter = concatAdapter
+
+        // Fix for ViewPager2 swipe conflict
+        binding.fragmentWatchListCollectionsRv.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                if (e.action == MotionEvent.ACTION_MOVE) {
+                    rv.parent.requestDisallowInterceptTouchEvent(true)
+                }
+                return false
+            }
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
+
+        adapter = WatchListAdapter(
+            onPosterClick = {
+                if (ClickHandler.isClickAllowed() && findNavController().currentDestination?.id == R.id.libraryFragment) {
+                    val bundle = Bundle()
+                    bundle.putString(Constants.MEDIA_SEND_REQUEST_KEY, Gson().toJson(it))
+                    findNavController().navigate(R.id.movieDetailsFragment, bundle)
+                }
+            },
+            onLongClick = { view, movie ->
+                showFloatingQuickActions(view, movie)
+            }
+        )
+        val spanCount = resources.getInteger(R.integer.grid_span_count)
+        binding.fragmentWatchListRv.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        binding.fragmentWatchListRv.adapter = adapter
+    }
+
+    private fun showFloatingQuickActions(targetView: View, movie: ink.c0d4.seenema.domain.model.MovieResult) {
+        val mainActivity = requireActivity() as? MainActivity ?: return
+
+        val actions = mutableListOf<QuickActionOverlay.ActionItem>()
+
+        actions.add(QuickActionOverlay.ActionItem(
+            icon = R.drawable.baseline_share_24,
+            label = getString(R.string.share).plus(" Movie"),
+            action = { shareMediaCard(this, movie, mediaSharePosterPicker) }
+        ))
+
+        actions.add(QuickActionOverlay.ActionItem(
+            icon = R.drawable.baseline_delete_24,
+            label = getString(R.string.btn_remove_from_watchlist),
+            action = {
+                watchListViewModel.deleteWatchListData(movie)
+                showToast(requireContext(), getString(R.string.msg_removed_from_watchlist))
+            }
+        ))
+
+        actions.add(QuickActionOverlay.ActionItem(
+            icon = R.drawable.baseline_add_circle_24,
+            label = getString(R.string.add_to_list),
+            action = { showChooseCustomListBottomSheet(movie) }
+        ))
+
+        mainActivity.showQuickActionMenu(
+            targetView = targetView,
+            actions = actions
+        )
+    }
+
+
+
+    private fun showChooseCustomListBottomSheet(movie: ink.c0d4.seenema.domain.model.MovieResult) {
+        val ctx = context ?: return
+        val dialog = BottomSheetDialog(ctx, R.style.SheetDialog)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_choose_custom_list, null)
+        
+        val rv = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.choose_list_rv)
+        val createBtn = view.findViewById<View>(R.id.create_new_list_btn)
+
+        customListViewModel.allLists.observe(viewLifecycleOwner) { lists ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                val checkList = mutableListOf<Int>()
+                for (list in lists) {
+                    if (customListViewModel.isMovieInList(list.id, movie.id ?: -1)) {
+                        checkList.add(list.id)
+                    }
+                }
+                
+                val adapter = ink.c0d4.seenema.core.adapters.ChooseCustomListAdapter(
+                    onListClick = { selectedList ->
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            if (customListViewModel.isMovieInList(selectedList.id, movie.id ?: -1)) {
+                                customListViewModel.removeMovieFromList(selectedList.id, movie.id ?: -1)
+                                showToast(ctx, "Removed from ${selectedList.name}")
+                            } else {
+                                customListViewModel.addMovieToList(selectedList.id, movie)
+                                showToast(ctx, "Added to ${selectedList.name}")
+                            }
+                        }
+                    },
+                    checkList = checkList
+                )
+                rv.adapter = adapter
+                adapter.submitList(lists)
+            }
+        }
+
+        createBtn.setOnClickListener {
+            dialog.dismiss()
+            showToast(ctx, "Go to Lists tab to create new lists")
+        }
+
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+    private fun showCreateListDialog() {
+        val ctx = context ?: return
+        val dialog = BottomSheetDialog(ctx, R.style.SheetDialog)
+        val view = layoutInflater.inflate(R.layout.dialog_create_list, null)
+        
+        val nameEt = view.findViewById<TextInputEditText>(R.id.list_name_et)
+        val descEt = view.findViewById<TextInputEditText>(R.id.list_desc_et)
+        val createBtn = view.findViewById<View>(R.id.create_list_confirm_btn)
+
+        createBtn.setOnClickListener {
+            val name = nameEt.text.toString().trim()
+            if (name.isNotEmpty()) {
+                // Lists created from Watchlist are automatically pinned to Watchlist
+                customListViewModel.createAndPinToWatchlist(name, descEt.text.toString().trim().takeIf { it.isNotEmpty() })
+                dialog.dismiss()
+                showToast(ctx, "Collection created and pinned to Watchlist")
+            } else {
+                nameEt.error = "Name cannot be empty"
+            }
+        }
+
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+    private fun observer() {
+        customListViewModel.pinnedWatchlistLists.observe(viewLifecycleOwner) { lists ->
+            collectionsAdapter.submitList(lists)
+            binding.fragmentWatchListCollectionsRv.visible()
+        }
+
+        watchListViewModel.getAllWatchListData().observe(viewLifecycleOwner) { list ->
+            fullList = list
+            val currentQuery = librarySearchVm.searchQuery.value
+            if (currentQuery.isNullOrBlank()) {
+                submitAndToggle(list)
+            } else {
+                applyFilter(currentQuery)
+            }
+        }
+        scheduledViewModel.getAllScheduledMovies().observe(viewLifecycleOwner) { scheduledList ->
+            val ids = scheduledList.mapNotNull { entity -> entity.id }.toSet()
+            adapter.updateScheduledMovies(ids)
+        }
+    }
+
+    private fun observeSearch() {
+        lifecycleScope.launchWhenStarted {
+            librarySearchVm.searchQuery.collectLatest { query ->
+                if (query.isNullOrBlank()) {
+                    submitAndToggle(fullList)
+                } else {
+                    applyFilter(query)
+                }
+            }
+        }
+    }
+
+    private fun applyFilter(query: String) {
+        val filtered = fullList.filter { entity ->
+            val title = entity.movieResult?.title ?: entity.movieResult?.name ?: ""
+            title.contains(query, ignoreCase = true)
+        }
+        submitAndToggle(filtered)
+    }
+
+    private fun submitAndToggle(list: List<WatchListEntity>) {
+        val query = librarySearchVm.searchQuery.value
+
+        if (list.isNotEmpty()) {
+            adapter.submitList(list)
+            binding.fragmentWatchListRv.visible()
+            binding.fragmentWatchListPlaceholder.gone()
+            binding.peekingLogo.gone()
+            binding.peekingShelf.gone()
+            binding.tvNoResult.gone()
+            binding.fragmentWatchListCollectionsRv.visible()
+        }
+        else {
+            adapter.submitList(emptyList())
+            binding.fragmentWatchListRv.gone()
+            binding.fragmentWatchListCollectionsRv.gone()
+
+            if (query.isNullOrBlank()) {
+                binding.tvNoResult.gone()
+                binding.fragmentWatchListPlaceholder.visible()
+                binding.peekingLogo.visible()
+                binding.peekingShelf.visible()
+            }
+            else {
+                binding.tvNoResult.visible()
+                binding.fragmentWatchListPlaceholder.gone()
+                binding.peekingLogo.gone()
+                binding.peekingShelf.gone()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+}

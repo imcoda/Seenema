@@ -5,7 +5,7 @@
     <data>
         <variable
             name="faq"
-            type="com.shalenmathew.movieflix.domain.model.FAQItem" />
+            type="ink.c0d4.seenema.domain.model.FAQItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

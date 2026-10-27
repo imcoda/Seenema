@@ -20,7 +20,7 @@ android {
         if (local.exists()) local.inputStream().use { load(it) }
     }
     signingConfigs {
-        create("personal") {
+        create("release") {
             if (signingProps.isNotEmpty()) {
                 storeFile = rootProject.file(signingProps.getProperty("storeFile"))
                 storePassword = signingProps.getProperty("storePassword")
@@ -30,14 +30,14 @@ android {
         }
     }
 
-    namespace = "com.shalenmathew.movieflix"
+    namespace = "ink.c0d4.seenema"
     compileSdk { version = release(36) { minorApiLevel = 1 } }
 
     defaultConfig {
-        applicationId = "ink.c0d4.movieflix"
+        applicationId = "ink.c0d4.seenema"
         minSdk = 24
         targetSdk = 36
-        versionCode = 107
+        versionCode = 108
         versionName = "2.2.8"
         resourceConfigurations += listOf("en", "zh")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -54,7 +54,7 @@ android {
 
     buildTypes {
         release {
-            if (signingProps.isNotEmpty()) signingConfig = signingConfigs.getByName("personal")
+            if (signingProps.isNotEmpty()) signingConfig = signingConfigs.getByName("release")
             buildConfigField("String", "MOVIE_API_KEY", "\"$movieApiKey\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -63,7 +63,7 @@ android {
         debug {
 
             buildConfigField("String", "MOVIE_API_KEY", "\"$movieApiKey\"")
-            // Separate package from upstream; keep a stable personal app ID.
+            // Use the Seenema application ID for both build types.
             isDebuggable = true
         }
     }

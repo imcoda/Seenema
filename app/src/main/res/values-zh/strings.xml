@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MovieFlix</string>
+    <string name="app_name">Seenema</string>
     <string name="hello_blank_fragment">空白页面</string>
     <string name="app_terms">继续即表示你已年满 18 岁，并同意隐私政策与使用条款</string>
     <string name="personal_note">个人笔记 📍</string>
@@ -133,7 +133,7 @@
     <string name="new_collection">新建合集</string>
     <string name="items_count">%1$d 项</string>
     <string name="save_to_custom_list">保存到自定义清单</string>
-    <string name="created_on_movieflix">MovieFlix</string>
+    <string name="created_on_seenema">Seenema</string>
     <string name="no_internet_connection">未连接网络</string>
     <string name="open_settings">打开设置</string>
     <string name="setting_item">设置项</string>

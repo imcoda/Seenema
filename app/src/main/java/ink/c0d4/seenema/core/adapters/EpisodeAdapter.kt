@@ -1,0 +1,113 @@
+package ink.c0d4.seenema.core.adapters
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.View
+import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import ink.c0d4.seenema.R
+import ink.c0d4.seenema.core.utils.loadImage
+import ink.c0d4.seenema.databinding.ItemEpisodeBinding
+import ink.c0d4.seenema.domain.model.TVEpisode
+
+class EpisodeAdapter(
+    private val onEpisodeClick: ((TVEpisode) -> Unit)? = null
+) : ListAdapter<TVEpisode?, RecyclerView.ViewHolder>(EpisodeDiffCallback()) {
+
+    companion object {
+        private const val TYPE_ITEM = 0
+        private const val TYPE_LOADING = 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (getItem(position) == null) TYPE_LOADING else TYPE_ITEM
+    }
+
+    inner class ViewHolder(private val binding: ItemEpisodeBinding) : RecyclerView.ViewHolder(binding.root) {
+        
+        fun bind(episode: TVEpisode) {
+            binding.apply {
+                // Episode name
+                itemEpisodeName.text = episode.name ?: root.context.getString(R.string.lbl_episode_number, episode.episodeNumber)
+                
+                // Episode number
+                itemEpisodeNumber.text = root.context.getString(R.string.lbl_episode_number, episode.episodeNumber)
+                
+                // Episode description
+                itemEpisodeDescription.text = episode.overview?.takeIf { it.isNotBlank() }
+                    ?: root.context.getString(R.string.msg_no_description)
+                
+                // Episode duration
+                val runtime = episode.runtime
+                itemEpisodeDuration.text = if (runtime != null && runtime > 0) {
+                    "${runtime}m"
+                } else {
+                    ""
+                }
+                
+                // Episode thumbnail - use W300 instead of W780 for better performance
+                if (episode.stillPath != null) {
+                    itemEpisodeThumbnail.loadImage(
+                        "https://image.tmdb.org/t/p/w300${episode.stillPath}",
+                        placeholder = ContextCompat.getDrawable(root.context, R.drawable.poster_bg)
+                    )
+                } else {
+                    itemEpisodeThumbnail.setImageDrawable(
+                        ContextCompat.getDrawable(root.context, R.drawable.poster_bg)
+                    )
+                }
+                
+                // Click listener
+                root.setOnClickListener {
+                    onEpisodeClick?.invoke(episode)
+                }
+            }
+        }
+    }
+
+    inner class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == TYPE_LOADING) {
+            val view = ProgressBar(parent.context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    parent.context.resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._45sdp)
+                )
+                val padding = parent.context.resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._10sdp)
+                setPadding(padding, padding, padding, padding)
+            }
+            LoadingViewHolder(view)
+        } else {
+            val binding = ItemEpisodeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ViewHolder(binding)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is ViewHolder) {
+            getItem(position)?.let { holder.bind(it) }
+        }
+    }
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        // Image recycling is handled automatically by Glide
+    }
+}
+
+class EpisodeDiffCallback : DiffUtil.ItemCallback<TVEpisode?>() {
+    override fun areItemsTheSame(oldItem: TVEpisode, newItem: TVEpisode): Boolean {
+        if (oldItem == null || newItem == null) {
+            return oldItem == newItem
+        }
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: TVEpisode, newItem: TVEpisode): Boolean {
+        return oldItem == newItem
+    }
+}

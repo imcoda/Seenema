@@ -18,5 +18,5 @@ dependencyResolutionManagement {
         } else { google(); mavenCentral() }
     }
 }
-rootProject.name = "MovieFlix"
+rootProject.name = "Seenema"
 include(":app")

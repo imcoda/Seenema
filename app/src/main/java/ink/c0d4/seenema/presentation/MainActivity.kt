@@ -1,0 +1,195 @@
+package ink.c0d4.seenema.presentation
+
+import android.content.res.ColorStateList
+import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import ink.c0d4.seenema.R
+import ink.c0d4.seenema.core.utils.Constants
+import ink.c0d4.seenema.core.utils.QuickActionOverlay
+import ink.c0d4.seenema.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+
+    private val navController by lazy{
+        (supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
+                as NavHostFragment).navController
+    }
+    private lateinit var binding: ActivityMainBinding
+    private var quickActionOverlay: QuickActionOverlay? = null
+    private var keyboardVisible = false
+
+    private fun updateBottomNavigation(destinationId: Int? = navController.currentDestination?.id) {
+        val primaryPage = destinationId in setOf(R.id.searchFragment, R.id.libraryFragment, R.id.settingsFragment)
+        binding.bottomNavigationView.visibility = if (primaryPage && !keyboardVisible)
+            android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(
+                scrim = android.graphics.Color.BLACK
+            ),
+            navigationBarStyle = SystemBarStyle.dark(
+                scrim = android.graphics.Color.BLACK
+            )
+        )
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+
+        // Setup bottom navigation with nav controller
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            // Trigger haptic feedback
+            binding.bottomNavigationView.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            
+            // Standard navigation behavior
+            androidx.navigation.ui.NavigationUI.onNavDestinationSelected(item, navController)
+            true
+        }
+
+        // Avoid re-navigating to the same destination when clicking the bottom nav item again
+        binding.bottomNavigationView.setOnItemReselectedListener {
+            // Do nothing
+        }
+
+        binding.bottomNavigationView.isItemActiveIndicatorEnabled = true
+
+        val csl = ColorStateList(
+            arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
+            intArrayOf(
+                ContextCompat.getColor(this, R.color.black),
+                ContextCompat.getColor(this, R.color.bottom_nav_grey),
+            )
+        )
+        binding.bottomNavigationView.itemActiveIndicatorColor = csl
+
+        // Handle bottom navigation visibility
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Ensure quick action overlay is dismissed on any navigation
+            quickActionOverlay?.dismiss()
+
+            updateBottomNavigation(destination.id)
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            keyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            updateBottomNavigation()
+            // Retain the original fitsSystemWindows handling for status/gesture bars.
+            ViewCompat.onApplyWindowInsets(view, insets)
+        }
+        ViewCompat.requestApplyInsets(binding.root)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 1. Check if Quick Action Overlay is showing
+                if (quickActionOverlay?.isShowing() == true) {
+                    quickActionOverlay?.dismiss()
+                    return
+                }
+
+                // 2. Check if the current destination is the home fragment
+                if (navController.currentDestination?.id == R.id.libraryFragment) {
+                    // If it is, finish the activity
+                    finish()
+                } else {
+                    // Otherwise, let the NavController handle the back press
+                    navController.navigateUp()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+        
+        // Handle notification intent - open movie details if launched from notification
+        handleNotificationIntent()
+    }
+
+    private fun handleNotificationIntent() {
+        if (intent?.getBooleanExtra("OPEN_MOVIE_DETAILS", false) == true) {
+            val movieId = intent.getIntExtra("MOVIE_ID", -1)
+            
+            if (movieId != -1) {
+                // Navigate to movie details with a delay to ensure nav controller is ready
+                binding.root.postDelayed({
+                    try {
+                        val currentDestination = navController.currentDestination?.id
+                        val bundle = bundleOf(
+                            Constants.MEDIA_SEND_REQUEST_ID_KEY to movieId
+                        )
+                        
+                        // Navigate from a valid destination that has an action to movieDetailsFragment
+                        when (currentDestination) {
+                            R.id.homeFragment, R.id.searchFragment, R.id.watchListFragment -> {
+                                // We're on a valid destination, navigate directly
+                                navController.navigate(R.id.movieDetailsFragment, bundle)
+                            }
+                            R.id.splashFragment, R.id.introFragment -> {
+                                // Wait for navigation to complete to homeFragment, then navigate to details
+                                navController.addOnDestinationChangedListener(object : androidx.navigation.NavController.OnDestinationChangedListener {
+                                    override fun onDestinationChanged(
+                                        controller: androidx.navigation.NavController,
+                                        destination: androidx.navigation.NavDestination,
+                                        arguments: Bundle?
+                                    ) {
+                                        if (destination.id == R.id.homeFragment) {
+                                            // Now we can navigate to movie details
+                                            controller.navigate(R.id.movieDetailsFragment, bundle)
+                                            controller.removeOnDestinationChangedListener(this)
+                                        }
+                                    }
+                                })
+                            }
+                            else -> {
+                                // Unknown destination, navigate to home first then to details
+                                navController.navigate(R.id.homeFragment)
+                                binding.root.postDelayed({
+                                    try {
+                                        navController.navigate(R.id.movieDetailsFragment, bundle)
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }, 200)
+                            }
+                        }
+                        
+                        // Clear the intent flag to prevent re-navigation on config changes
+                        intent?.removeExtra("OPEN_MOVIE_DETAILS")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }, 500) // Increased delay to ensure nav graph is fully initialized
+            }
+        }
+    }
+    
+    fun showQuickActionMenu(
+        targetView: android.view.View,
+        actions: List<QuickActionOverlay.ActionItem>,
+        onDismiss: (() -> Unit)? = null
+    ) {
+        if (quickActionOverlay == null) {
+            quickActionOverlay = QuickActionOverlay(this)
+        }
+        quickActionOverlay?.show(binding.root, targetView, actions, onDismiss)
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNotificationIntent()
+    }
+}

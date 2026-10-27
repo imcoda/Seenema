@@ -1,0 +1,99 @@
+package ink.c0d4.seenema.core.adapters
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import ink.c0d4.seenema.R
+import ink.c0d4.seenema.core.utils.Constants.TMDB_POSTER_IMAGE_BASE_URL_W342
+import ink.c0d4.seenema.core.utils.DiffUtilCallback
+import ink.c0d4.seenema.core.utils.isNetworkAvailable
+import ink.c0d4.seenema.core.utils.loadImage
+import ink.c0d4.seenema.core.utils.showToast
+import ink.c0d4.seenema.databinding.ItemListBinding
+import ink.c0d4.seenema.domain.model.MovieResult
+
+class HorizontalAdapter(
+    private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null,
+    private var onLongClick: ((view: View, movieResult: MovieResult) -> Unit)? = null,
+    private var onLoadMore: (() -> Unit)? = null
+) : ListAdapter<MovieResult, HorizontalAdapter.ViewHolder>(DiffUtilCallback()) {
+
+    private var isLoading = false
+    private var scheduledMovieIds = setOf<Int>()
+
+    fun setLoadingState(loading: Boolean) {
+        isLoading = loading
+    }
+
+    fun updateScheduledMovies(scheduledIds: Set<Int>) {
+        scheduledMovieIds = scheduledIds
+        notifyDataSetChanged()
+    }
+
+    fun addMoreItems(newItems: List<MovieResult>) {
+        val currentList = currentList.toMutableList()
+        currentList.addAll(newItems)
+        submitList(currentList)
+    }
+
+    inner class ViewHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
+
+        private val binding:ItemListBinding
+        init {
+            binding=ItemListBinding.bind(itemView)
+        }
+
+        fun bind(item:MovieResult){
+            binding.apply {
+                val context = binding.root.context
+                val posterPath = item.posterPath
+                val isLocal = posterPath != null && (posterPath.startsWith("content://") || posterPath.count { it == '/' } > 1)
+                
+                if (isLocal) {
+                    itemListPoster.loadImage(posterPath)
+                } else {
+                    itemListPoster.loadImage(TMDB_POSTER_IMAGE_BASE_URL_W342.plus(posterPath))
+                }
+                
+                itemListRatingTxt.text = String.format("%.1f", item.voteAverage)
+
+                // Show schedule icon if movie is scheduled
+                itemListScheduleIcon.visibility = if (scheduledMovieIds.contains(item.id)) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                itemListPoster.setOnClickListener(){
+                    if(isNetworkAvailable(context)){
+                        onPosterClick?.invoke(item)
+                    }else{
+                        showToast(context, context.getString(R.string.msg_check_internet))
+                    }
+                }
+
+                itemListPoster.setOnLongClickListener {
+                    onLongClick?.invoke(root, item)
+                    true
+                }
+            }
+        }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+        
+        // Load more when reaching near the end
+        if (position >= itemCount - 3 && !isLoading) {
+            onLoadMore?.invoke()
+        }
+    }
+}
