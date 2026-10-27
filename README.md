@@ -1,8 +1,13 @@
-# MovieFlix 个人版
+# MovieFlix
 
-基于 [MovieFlix 2.2](https://github.com/shalenMathew/MovieFlix_App)，上游提交 `c7ca2763f9dee568f94cbd424983f36cf5ae0ce9`。仓库名沿用 Seenema，应用基于 MovieFlix。
+本仓库是 [shalenMathew/MovieFlix_App](https://github.com/shalenMathew/MovieFlix_App) 的定制分支，基于 MovieFlix 2.2，上游提交 `c7ca2763f9dee568f94cbd424983f36cf5ae0ce9`，保留原 MIT 许可与版权。仓库名沿用 Seenema，应用基于 MovieFlix。
 
 保留 MovieFlix 的主题、字体、图标、电影信息、笔记与备份。仅保留 Search / Gallery / Settings，精简推荐、待看、清单、追剧、提醒等无关入口。Gallery 按个人需求调整为海报与剧照并排的时间线。
+
+## 2.2.8
+
+- API 请求改用 `api.tmdb.org` 替代入口，沿用 TMDB 电影编号、数据格式和语言设置。
+- 新版本名、Release 标签和 APK 文件名不再包含 `personal`；包名与签名保持兼容，可覆盖安装旧版。
 
 ## 2.2-personal.7
 
