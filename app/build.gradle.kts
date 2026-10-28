@@ -37,8 +37,8 @@ android {
         applicationId = "ink.c0d4.seenema"
         minSdk = 24
         targetSdk = 36
-        versionCode = 109
-        versionName = "2.2.9"
+        versionCode = 110
+        versionName = "2.2.10"
         resourceConfigurations += listOf("en", "zh")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

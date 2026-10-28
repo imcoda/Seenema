@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Seenema" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Seenema" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
@@ -18,7 +18,7 @@
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 
-    <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="SheetDialog" parent="Theme.Design.BottomSheetDialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:colorBackground">@android:color/transparent</item>
