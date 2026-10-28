@@ -2,6 +2,7 @@ package ink.c0d4.seenema
 
 import android.app.Application
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -26,6 +27,7 @@ class SeenemaApp : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         Log.d("SeenemaApp", "onCreate")
 
         // Explicitly initialize WorkManager to ensure HiltWorkerFactory is used.
