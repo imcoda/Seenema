@@ -348,7 +348,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="@dimen/_5sdp"
                                             android:layout_marginBottom="@dimen/_8sdp"
-                                            android:hint="@string/enter_your_note"
+                                            app:hintEnabled="false"
                                             android:textColorHint="@color/white"
                                             android:visibility="gone"
                                             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -361,6 +361,9 @@
 
                                             <com.google.android.material.textfield.TextInputEditText
                                                 android:id="@+id/fragment_movie_details_personal_note_edit_text"
+                                                android:hint="@string/enter_your_note"
+                                                android:textColorHint="@color/text_secondary"
+                                                android:textCursorDrawable="@drawable/search_cursor"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:fontFamily="@font/montserrat_medium"

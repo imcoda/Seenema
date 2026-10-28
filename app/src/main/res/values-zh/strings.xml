@@ -251,4 +251,7 @@
     <string name="next_year">下一年</string>
     <string name="gallery_show_grid">切换为三列海报</string>
     <string name="gallery_show_cards">切换为横向时间线卡片</string>
+    <string name="template_editorial_poster">海报</string>
+    <string name="template_character_poster">电影卡片</string>
+    <string name="share_director">导演：%1$s</string>
 </resources>
