@@ -1062,11 +1062,7 @@ class MovieDetailsFragment : BottomSheetDialogFragment() {
         // Initial setup
         binding.fragmentMovieDetailsPersonalNoteEditText.apply {
             setOnEditorActionListener(editorActionListener)
-            onFocusChangeListener =
-                View.OnFocusChangeListener { _, hasFocus ->
-                    binding.fragmentMovieDetailsPersonalNoteTextInputLayout.isHintEnabled =
-                        !hasFocus
-                }
+
         }
         binding.fragmentMovieDetailsPersonalNoteBtn.setOnClickListener(openEditorClickListener)
         binding.fragmentMovieDetailsPersonalNote.setOnClickListener(openEditorClickListener)

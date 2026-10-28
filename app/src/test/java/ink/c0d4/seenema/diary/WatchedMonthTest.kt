@@ -2,11 +2,9 @@ package ink.c0d4.seenema.diary
 
 import android.os.Bundle
 import android.os.Looper
-import com.google.android.material.textfield.TextInputEditText
+import android.widget.NumberPicker
 import android.widget.TextView
 import android.view.View
-import android.widget.GridLayout
-import com.google.android.material.button.MaterialButton
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.Gson
 import ink.c0d4.seenema.SeenemaApp
@@ -74,12 +72,12 @@ class WatchedMonthTest {
             detail.childFragmentManager.executePendingTransactions()
             var picker = detail.childFragmentManager.findFragmentByTag(WatchedMonthDialogFragment.REQUEST) as WatchedMonthDialogFragment
             var dialog = picker.requireDialog()
-            val year = dialog.findViewById<TextInputEditText>(R.id.watched_year_picker)!!
-            val grid = dialog.findViewById<GridLayout>(R.id.watched_month_grid)!!
-            assertEquals("2026", year.text.toString())
-            assertTrue(grid.findViewWithTag<MaterialButton>("month_10").isSelected)
-            year.setText("2024")
-            grid.findViewWithTag<View>("month_2").performClick()
+            val year = dialog.findViewById<NumberPicker>(R.id.watched_year_picker)!!
+            val month = dialog.findViewById<NumberPicker>(R.id.watched_month_picker)!!
+            assertEquals(2026, year.value)
+            assertEquals(10, month.value)
+            year.value = 2024
+            month.value = 2
             dialog.findViewById<View>(R.id.watched_month_save)!!.performClick()
             idleUntil { runBlocking { dao.getFavMovieById(-51)?.insertedAt } == "2024-02-01 12:00:00" }
             idleUntil { row.text.toString() == "Watched: February 2024" }
@@ -99,9 +97,9 @@ class WatchedMonthTest {
             detail.childFragmentManager.executePendingTransactions()
             picker = detail.childFragmentManager.findFragmentByTag(WatchedMonthDialogFragment.REQUEST) as WatchedMonthDialogFragment
             dialog = picker.requireDialog()
-            assertEquals("2024", dialog.findViewById<TextInputEditText>(R.id.watched_year_picker)!!.text.toString())
-            assertTrue(dialog.findViewById<GridLayout>(R.id.watched_month_grid)!!.findViewWithTag<MaterialButton>("month_2").isSelected)
-            dialog.findViewById<GridLayout>(R.id.watched_month_grid)!!.findViewWithTag<View>("month_12").performClick()
+            assertEquals(2024, dialog.findViewById<NumberPicker>(R.id.watched_year_picker)!!.value)
+            assertEquals(2, dialog.findViewById<NumberPicker>(R.id.watched_month_picker)!!.value)
+            dialog.findViewById<NumberPicker>(R.id.watched_month_picker)!!.value = 12
             dialog.findViewById<View>(R.id.watched_month_cancel)!!.performClick()
             Shadows.shadowOf(Looper.getMainLooper()).idle()
             assertEquals(saved, runBlocking { dao.getFavMovieById(-51) })
@@ -119,15 +117,15 @@ class WatchedMonthTest {
             fragment.show(activity.supportFragmentManager, "month")
             activity.supportFragmentManager.executePendingTransactions()
             var dialog = fragment.requireDialog()
-            assertEquals("年", dialog.findViewById<TextInputEditText>(R.id.watched_year_picker)!!.contentDescription.toString())
-            dialog.findViewById<TextInputEditText>(R.id.watched_year_picker)!!.setText("2001")
-            dialog.findViewById<GridLayout>(R.id.watched_month_grid)!!.findViewWithTag<View>("month_8").performClick()
+            assertEquals("年", dialog.findViewById<NumberPicker>(R.id.watched_year_picker)!!.contentDescription.toString())
+            dialog.findViewById<NumberPicker>(R.id.watched_year_picker)!!.value = 2001
+            dialog.findViewById<NumberPicker>(R.id.watched_month_picker)!!.value = 8
             controller.recreate()
             activity = controller.get()
             fragment = activity.supportFragmentManager.findFragmentByTag("month") as WatchedMonthDialogFragment
             dialog = fragment.requireDialog()
-            assertEquals("2001", dialog.findViewById<TextInputEditText>(R.id.watched_year_picker)!!.text.toString())
-            assertTrue(dialog.findViewById<GridLayout>(R.id.watched_month_grid)!!.findViewWithTag<MaterialButton>("month_8").isSelected)
+            assertEquals(2001, dialog.findViewById<NumberPicker>(R.id.watched_year_picker)!!.value)
+            assertEquals(8, dialog.findViewById<NumberPicker>(R.id.watched_month_picker)!!.value)
         } finally {
             controller.pause().stop().destroy()
         }

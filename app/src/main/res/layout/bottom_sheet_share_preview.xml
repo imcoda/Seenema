@@ -51,7 +51,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_template_classic"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/SeenemaShareChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/template_classic_dark"
@@ -60,7 +60,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_template_minimal"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/SeenemaShareChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/template_minimal_poster"
@@ -68,7 +68,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_media_editorial"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/SeenemaShareChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/template_editorial_poster"
@@ -77,7 +77,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_media_character"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/SeenemaShareChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/template_character_poster"

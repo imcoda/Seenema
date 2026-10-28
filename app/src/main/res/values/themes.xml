@@ -97,4 +97,19 @@
         <item name="cornerSize">25%</item>
     </style>
 
+    <style name="SeenemaWheelOverlay" parent="">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:colorAccent">@color/app_color</item>
+        <item name="colorAccent">@color/app_color</item>
+    </style>
+    <style name="SeenemaShareChip" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textColor">@color/white</item>
+        <item name="chipBackgroundColor">@color/share_chip_background</item>
+        <item name="chipStrokeColor">@color/share_chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="checkedIconTint">@color/white</item>
+        <item name="rippleColor">#335E17EB</item>
+    </style>
 </resources>

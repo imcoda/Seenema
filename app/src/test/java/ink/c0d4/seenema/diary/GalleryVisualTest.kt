@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Looper
 import android.view.View
-import android.widget.GridLayout
+import android.widget.NumberPicker
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import ink.c0d4.seenema.SeenemaApp
@@ -43,7 +43,7 @@ class GalleryVisualTest {
             bitmap.recycle()
         }
     }
-    @Test fun nativeGalleryAndMonthGridFitPhoneWidthWithoutClipping() {
+    @Test fun nativeGalleryAndMonthWheelsFitPhoneWidthWithoutClipping() {
         val controller = Robolectric.buildActivity(MainActivity::class.java).setup()
         try {
             val activity = controller.get()
@@ -100,7 +100,7 @@ class GalleryVisualTest {
             assertTrue("The compact Gallery header must retain its dark background", Color.red(rendered.getPixel(4, title.height / 2)) < 80)
             System.getenv("SEENEMA_PREVIEW_DIR")?.let { dir ->
                 File(dir).mkdirs()
-                File(dir, "Seenema-personal7-gallery-layout.png").outputStream().use {
+                File(dir, "Seenema-gallery-layout.png").outputStream().use {
                     rendered.compress(Bitmap.CompressFormat.PNG, 100, it)
                 }
             }
@@ -112,13 +112,28 @@ class GalleryVisualTest {
             sheet.measure(View.MeasureSpec.makeMeasureSpec(720, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
             sheet.layout(0, 0, 720, sheet.measuredHeight)
-            val months = sheet.findViewById<GridLayout>(R.id.watched_month_grid)
-            assertEquals(12, months.childCount)
-            assertEquals("2026", sheet.findViewById<android.widget.TextView>(R.id.watched_year_value).text.toString())
-            assertTrue(months.getChildAt(11).right <= months.width)
+            val year = sheet.findViewById<NumberPicker>(R.id.watched_year_picker)
+            val month = sheet.findViewById<NumberPicker>(R.id.watched_month_picker)
+            assertEquals(2026, year.value)
+            assertEquals(10, month.value)
+            assertEquals(android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS, year.descendantFocusability)
+            assertEquals(android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS, month.descendantFocusability)
+            assertEquals(Color.WHITE, year.textColor)
+            assertEquals(Color.WHITE, month.textColor)
+            for ((wheel, label) in listOf(year to "2026", month to "Oct")) {
+                val input = (0 until wheel.childCount).map { wheel.getChildAt(it) }
+                    .filterIsInstance<android.widget.EditText>().single()
+                assertEquals(label, input.text.toString())
+                assertEquals(Color.WHITE, input.currentTextColor)
+                assertEquals(View.VISIBLE, input.visibility)
+                input.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                input.invalidate()
+            }
+            assertTrue(month.right <= (month.parent as View).width)
+            assertTrue(sheet.height <= 440 * activity.resources.displayMetrics.density)
             assertTrue(sheet.findViewById<View>(R.id.watched_month_save).bottom <= sheet.height)
-            assertTrue(months.findViewWithTag<MaterialButton>("month_10").isSelected)
-            capture(sheet, "Seenema-personal7-month-sheet.png")
+
+            capture(sheet, "Seenema-month-wheels.png")
         } finally { controller.pause().stop().destroy() }
     }
 }
